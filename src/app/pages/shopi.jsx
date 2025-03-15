@@ -1,3 +1,4 @@
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -12,52 +13,10 @@ import {
   Zap,
 } from "lucide-react";
 import { FaCaretRight, FaLink } from "react-icons/fa6";
-import { Link } from "react-router-dom";
-import ProductCard from "./productCard";
+import  Link  from "next/link";
+import ProductCard from "../components/productCard";
 import { useShop } from "../shopContext";
 
-//import { useState } from "react";
-//import { motion } from "framer-motion";
-//import { ShoppingCart, User, Menu, X } from "react-feather";
-
-/* const HeroSection = () => {
-  return (
-    <motion.div
-      className="bg-blue-600 text-white"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
-        <motion.h1
-          className="text-4xl md:text-6xl font-bold mb-6"
-          initial={{ y: -50 }}
-          animate={{ y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-        >
-          Welcome to E-Shop
-        </motion.h1>
-        <motion.p
-          className="text-xl md:text-2xl mb-8"
-          initial={{ y: 50 }}
-          animate={{ y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-        >
-          Discover amazing deals on the latest products
-        </motion.p>
-        <motion.button
-          className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full hover:bg-blue-100 transition duration-300"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Shop Now
-        </motion.button>
-      </div>
-    </motion.div>
-  )
-} */
-
-//import { motion } from "framer-motion";
 
 const HeroSection = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -122,7 +81,7 @@ const HeroSection = () => {
           <motion.div
             className="flex flex-col sm:flex-row justify-center items-center gap-4"
             variants={itemVariants}
-          ><Link to={'/products'}>
+          ><Link href={'/products'}>
             <motion.button
               className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full hover:bg-blue-200 transition duration-300 flex items-center"
               whileHover={{ scale: 1.05 }}
@@ -206,25 +165,9 @@ const FeatureCard = ({ icon: Icon, title, description }) => (
   </motion.div>
 );
 
-//export  HeroSection;
 
 const FeaturedItems = () => {
-  /* const items = [
-    { id: 1, name: "Noise Earbuds ", price: "99.99", image: "/bud1.jpg" },
-    {
-      id: 2,
-      name: "Gucci Stylish Leather Bag",
-      price: "129.99",
-      image: "/bag3.jpg",
-    },
-    {
-      id: 3,
-      name: "Rolex Golden 1943 Model",
-      price: "79.99",
-      image: "/watch4.jpg",
-    },
-    { id: 4, name: "Teddy Bear Nike", price: "149.99", image: "/ift1.jpg" },
-  ]; */
+ 
   const { items } = useShop();
   return (
     <section id="featured-products" className="py-16 bg-gray-50">
@@ -244,29 +187,11 @@ const FeaturedItems = () => {
             image={item.product_image}
               
             ></ProductCard>
-            /*  <motion.div
-              key={item.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-56 object-cover"
-              />
-              <div className="p-4 ">
-                <h3 className="text-lg font-semibold mb-2">{item.name}</h3>
-                <p className="text-blue-600 font-bold">{item.price}</p>
-                <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300">
-                  Add to Cart
-                </button>
-              </div>
-            </motion.div> */
+           
           ))}
         </div>
         <div className="w-full flex item-center justify-end">
-          <Link to={"/products"}>
+          <Link href={"/products"}>
             <button className="flex items-center justify-center gap-1 h-10 bg-blue-100 rounded-md m-2 p-2 hover:text-blue-600">
               Explore all products <FaCaretRight className="h-5 pt-1" />
             </button>
@@ -287,13 +212,7 @@ const BestDeals = () => {
       setDeals(bestOffer)
     }
   },[items])
- /*  const deals = [
-    { id: 1, name: "Deal 1", discount: "20% OFF", image: "/watch4.jpg" },
-    { id: 2, name: "Deal 2", discount: "30% OFF", image: "/shoe17.jpg" },
-    { id: 3, name: "Deal 3", discount: "25% OFF", image: "/acc1.jpg" },
-    { id: 4, name: "Deal 3", discount: "25% OFF", image: "/bud6.jpg" },
-  ];
- */
+ 
   return (
     <section className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -317,7 +236,7 @@ const BestDeals = () => {
                 <motion.button
                 whileHover={{scale:1.0004}}
                 className="mt-4 w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition duration-300 flex items-center justify-center gap-3">
-                 <Link to={`/productDetail/${deal._id}`} className="flex gap-4 items-center">
+                 <Link href={`/productDetail/${deal._id}`} className="flex gap-4 items-center">
                  Visit Now <FaLink className="pt-1"/>
                  </Link> 
                 </motion.button>

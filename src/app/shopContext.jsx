@@ -1,3 +1,4 @@
+"use client";
 import React, { useContext, createContext, useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -22,6 +23,27 @@ const ShopContextProvider = ({ children }) => {
   const [order, setOrder] = useState([]);
   const [token, setToken] = useState("");
   const [mess, setMess] = useState({message:'', type:''});
+  const [users, setUsers] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [contact, setContact] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [usersRes, ordersRes, productsRes] = await Promise.all([
+          axios.get(`${path}user/`),
+          axios.get(`${path}order/`),
+        ]);
+
+        setUsers(usersRes.data);
+        setOrders(ordersRes.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   const [categories, setCategories] = useState([
     {
@@ -159,14 +181,16 @@ console.log(data);
   const fetchUserData = async (userId) => {
     if (!userId) return;
     try {
-      const [orderRes, favRes, cartRes] = await Promise.all([
+      const [orderRes, favRes, cartRes, contactRes] = await Promise.all([
         fetch(`${path}order/${userId}`).then((res) => res.json()),
         fetch(`${path}fav/${userId}`).then((res) => res.json()),
         fetch(`${path}cart/${userId}`).then((res) => res.json()),
+        fetch(`${path}contact`).then((res) => res.json()),
       ]);
       setOrder(orderRes);
       setFavs(favRes);
       setCart(cartRes);
+      setContact(contactRes);
     } catch (error) {
       console.error("Error fetching user data:", error.message);
     }
@@ -369,7 +393,7 @@ console.log(data);
 
         if (response.data && response.data.length > 0) {
           setFavs(response.data);
-          //console.log(response.data);
+          console.log('new fav set when delete',response.data);
           //res.send('ok')
         } else {
           setFavs([]); // Clear favorites if the response is empty
@@ -385,7 +409,7 @@ console.log(data);
 
         if (response.data && response.data.length > 0) {
           setFavs(response.data);
-          console.log(response.data);
+          console.log('new fav set when add',response.data);
         }
       }
     } catch (error) {
@@ -411,10 +435,10 @@ console.log(data);
         setSearchTerm,
         handleCartClick,
         filteredItems,
-        cart,
+        cart,users,orders,
         categories,
         brands,
-        setCart,
+        setCart,contact,
         user,mess, setMess,
         token,
         setUser,

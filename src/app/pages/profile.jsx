@@ -1,6 +1,7 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { User, Package, Heart, Settings, LogOut } from "lucide-react";
+import { User, Package, Heart, Settings } from "lucide-react";
 import { useShop } from "../shopContext";
 import { format } from "date-fns";
 

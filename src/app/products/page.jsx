@@ -1,16 +1,17 @@
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Search, ChevronLeft, ChevronRight ,TimerReset } from 'lucide-react';
 import { useShop } from "../shopContext";
-import ProductCard from "./productCard";
+import ProductCard from "../components/productCard";
 import { RiResetLeftLine } from "react-icons/ri";
 
 export default function Products() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(12);
-  const { brand,items,brands,selectedCategory, setSelectedCategory,searchTerm, setSearchTerm ,filteredItems,categories,setBrand} = useShop();
+  const { brand,brands,selectedCategory, setSelectedCategory,searchTerm, setSearchTerm ,filteredItems,categories,setBrand} = useShop();
 
  useEffect(()=>{
   setSelectedCategory('All');
@@ -42,7 +43,7 @@ export default function Products() {
   }, [searchTerm, selectedCategory]);
 
   return (
-    <div className="p-4 max-w-7xl mx-auto">
+    <div className="p-4 max-w-7xl mx-auto text-gray-800 bg-white">
       <motion.h1
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

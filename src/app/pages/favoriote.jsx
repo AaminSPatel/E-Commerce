@@ -1,10 +1,11 @@
+"use client";
 
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import  Link  from "next/link";
 import { Heart, ShoppingBag, Trash2, ChevronLeft } from "lucide-react"
 import { motion } from "framer-motion"
 import { useShop } from "../shopContext"
-import ProductCard from "./productCard"
+import ProductCard from "../components/productCard"
 
 const FavoritesPage = () => {
   // This would typically come from a state management solution like Redux or Context
@@ -97,7 +98,7 @@ const FavoritesPage = () => {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-2">
               <Link
-                to="/products"
+                href="/products"
                 className="flex items-center text-indigo-600 hover:text-indigo-800 transition-colors"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -161,7 +162,7 @@ const FavoritesPage = () => {
               </p>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
-                  to="/products"
+                  href="/products"
                   className="px-6 py-3 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition-colors"
                 >
                   Discover Products

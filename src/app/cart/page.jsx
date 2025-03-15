@@ -1,8 +1,10 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Minus, X } from "lucide-react";
 import { useShop } from "../shopContext";
-import { Link } from "react-router-dom";
+import  Link  from "next/link";
 
 const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
   return (
@@ -116,7 +118,7 @@ const BillTable = ({ items }) => {
           <span>${total.toFixed(2)}</span>
         </div>
       </div>
-      <Link to="/order">
+      <Link href="/order">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -163,7 +165,7 @@ const CartPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen text-gray-900 bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-center mb-10 text-gray-800">
           Your Shopping Cart

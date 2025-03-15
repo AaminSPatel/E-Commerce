@@ -1,71 +1,79 @@
+"use client";
 
-import { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Heart, ShoppingCart } from 'lucide-react';
-import { useShop } from '../shopContext';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { Heart, ShoppingCart } from "lucide-react";
+import { useShop } from "../shopContext";
+import { useParams } from "react-router-dom";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
 
 export default function ProductOpen() {
   const [product, setProduct] = useState(null);
   const [isInCart, setIsInCart] = useState(false);
 
   const { id } = useParams();
- const {
+  const {
     handleAddFav,
     userId,
     favs,
     setFavs,
     cart,
-    setCart,items,
+    setCart,
+    items,
     path,
     handleCartClick,
   } = useShop();
   const [isFav, setIsFav] = useState(false);
 
   useEffect(() => {
-    //console.log();
+    console.log("Fav change");
     const fav = async () => {
       try {
         const fv = await favs.find((ite) => ite.productId == product._id);
-        if (fv) setIsFav(true);
+        console.log("Adgf", favs);
+        if (fv) {
+          setIsFav(true);
+        } else {
+          setIsFav(false);
+        }
       } catch (err) {
         console.log(err);
       }
     };
     fav();
-  }, [favs]);
+  }, [isFav]);
 
- // const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [ripple, setRipple] = useState(false);
   //const [isInCart, setIsInCart] = useState('');
 
   const handleClick = async () => {
     //setIsLoading(true);
-    
-    setIsInCart('loading')
+
+    setIsInCart("loading");
     setRipple(true); // Start ripple animation
     await handleCartClick(product._id);
     setRipple(false); // End ripple animation
-   // setIsLoading(false);
-   if(isInCart== 'addtocart'){
-      setIsInCart('in-cart');
-   }
-   else{
-    setIsInCart('addtocart')
-   }
-        
+    // setIsLoading(false);
+    if (isInCart == "addtocart") {
+      setIsInCart("in-cart");
+    } else {
+      setIsInCart("addtocart");
+    }
   };
 
   useEffect(() => {
     //console.log();
     const carts = async () => {
       try {
-        const cartt = await cart.find((ite) => ite.productId._id == product._id);
+        const cartt = await cart.find(
+          (ite) => ite.productId._id == product._id
+        );
         if (cartt) {
-          setIsInCart('in-cart');
+          setIsInCart("in-cart");
           //setRipple(true);
         }
-       
+
         // console.log(cartt);
       } catch (err) {
         console.log(err);
@@ -99,7 +107,7 @@ export default function ProductOpen() {
           <div className="lg:w-1/2">
             <div className="h-64 lg:h-[90vh] relative">
               <img
-                src={'.'+product.product_image}
+                src={"." + product.product_image}
                 alt={product.product_name}
                 className="w-full h-full object-center object-cover"
               />
@@ -114,7 +122,9 @@ export default function ProductOpen() {
               <h2 className="text-3xl font-extrabold text-gray-900 varela sm:text-4xl">
                 {product.product_name}
               </h2>
-              <p className="mt-2 text-xl text-blue-600 font-semibold">{product.product_brand}</p>
+              <p className="mt-2 text-xl text-blue-600 font-semibold">
+                {product.product_brand}
+              </p>
               <div className="mt-3">
                 <span className="text-2xl font-bold text-gray-900">
                   ${product.product_price.toFixed(2)}
@@ -125,7 +135,9 @@ export default function ProductOpen() {
                 {product.description}
               </p>
               <div className="mt-8">
-                <h3 className="text-lg font-semibold text-gray-900">Key Features:</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Key Features:
+                </h3>
                 <ul className="mt-4 space-y-2">
                   {product.features.map((feature, index) => (
                     <li key={index} className="flex items-center text-gray-600">
@@ -149,29 +161,33 @@ export default function ProductOpen() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => {setIsInCart(!isInCart); handleClick()}}
+                  onClick={() => {
+                    setIsInCart(!isInCart);
+                    handleClick();
+                  }}
                   className={`flex-1 px-6 py-3 rounded-full text-lg font-semibold transition-colors duration-300 ${
                     isInCart
-                      ? 'bg-green-500 text-white'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? "bg-green-500 text-white"
+                      : "bg-blue-600 text-white hover:bg-blue-700"
                   }`}
                 >
                   <ShoppingCart className="inline-block mr-2 h-6 w-6" />
-                  {isInCart ? 'In Cart' : 'Add to Cart'}
+                  {isInCart ? "In Cart" : "Add to Cart"}
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => {setIsFav(!isFav); handleAddFav(product._id) }}
-                  className={`px-6 py-3 rounded-full text-lg font-semibold transition-colors duration-300 ${
+                  onClick={() => {
+                    setIsFav(!isFav)
+                    handleAddFav(product._id);
+                  }}
+                  className={`px-3 py-3 rounded-full text-lg font-semibold transition-colors duration-300 ${
                     isFav
-                      ? 'bg-red-500 text-white'
-                      : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                      ? "bg-red-500 text-white"
+                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"
                   }`}
-                >
-                  <Heart
-                    className={`inline-block h-6 w-6 ${isFav ? 'fill-current' : ''}`}
-                  />
+                > fav
+                  {isFav ? <FaHeart /> : <FaRegHeart />}
                 </motion.button>
               </div>
             </motion.div>
