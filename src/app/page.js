@@ -270,7 +270,9 @@ const DiscountOffers = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <img
+            <Image 
+            height={200}
+            width={200}
               src="/discount1.jpg"
               alt="Discount Offer"
               className="w-full  h-auto object-cover"
@@ -289,7 +291,7 @@ const DiscountOffers = () => {
               Limited Time Offer!
             </h3>
             <p className="text-lg text-gray-700 mb-6">
-              Save big with a **50% discount** on all electronics. Don't miss
+              Save big with a **50% discount** on all electronics. Don&apos;t miss
               out—use code:{" "}
               <span className="font-bold text-blue-600">FLASH50</span> at
               checkout.
