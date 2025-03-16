@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useShop } from "../shopContext";
 import axios from "axios";
+import Image from "next/image";
 
 // Mock product data (in a real app, this would come from the cart or previous page)
 const product = {
@@ -440,7 +441,7 @@ export default function OrderPage() {
                         key={item._id}
                         className="flex items-center w-56 shadow-md shadow-blue-300 rounded-md"
                       >
-                        <img
+                        <Image
                           src={item.productId.product_image}
                           alt={item.productId.product_name}
                           width={80}
@@ -549,7 +550,7 @@ export default function OrderPage() {
                     key={item._id}
                     className="flex items-center w-56 shadow-md shadow-blue-300 rounded-md"
                   >
-                    <img
+                    <Image
                       src={item.productId.product_image}
                       alt={item.productId.product_name}
                       width={80}

@@ -5,6 +5,7 @@ import { User, Package, Heart, Settings } from "lucide-react";
 import { useShop } from "../shopContext";
 import { format } from "date-fns";
 import Link from "next/link";
+import Image from "next/image";
 
 const TabButton = ({ icon: Icon, label, isActive, onClick }) => (
   <motion.button
@@ -46,7 +47,9 @@ const PurchaseHistoryItem = ({ order, onEdit }) => {
               key={index}
               className="flex items-center gap-4 bg-white p-3 rounded-lg shadow-md overflow-hidden"
             >
-              <img
+              <Image
+        height={200}
+        width={200}
                 src={item.productId.product_image}
                 alt={item.productId.product_name}
                 className="w-16 h-16 object-cover rounded "
@@ -83,7 +86,9 @@ const FavoriteItem = ({ item, onRemove }) => (
     exit={{ opacity: 0, scale: 0.9 }}
     className="bg-white p-4 rounded-lg shadow-md flex items-center space-x-4"
   >
-    <img
+    <Image
+        height={200}
+        width={200}
       src={item.productId.product_image}
       alt={item.productId.product_name}
       className="w-20 h-20 object-cover rounded"
@@ -148,7 +153,9 @@ const ProfileDashboard = () => {
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="flex items-center space-x-4 mb-6">
-            <img
+            <Image
+        height={200}
+        width={200}
               src="/user1.jpg"
               alt="Profile"
               className="w-20 h-20 rounded-full"

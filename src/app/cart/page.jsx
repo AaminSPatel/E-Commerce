@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Minus, X } from "lucide-react";
 import { useShop } from "../shopContext";
 import  Link  from "next/link";
+import Image from "next/image";
 
 const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
   return (
@@ -16,7 +17,9 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
       className="flex items-center  justify-between p-4 bg-white rounded-lg shadow-md mb-4 "
     >
       <div className="flex items-center space-x-4">
-        <img
+        <Image
+        height={200}
+        width={200}
           src={item.productId.product_image}
           alt={item.productId.product_name}
           className="w-20 h-20 object-cover rounded"

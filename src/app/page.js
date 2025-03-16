@@ -11,6 +11,7 @@ import { FaCaretRight, FaLink } from "react-icons/fa6";
 import  Link  from "next/link";
 import ProductCard from "./components/productCard";
 import { useShop } from "./shopContext";
+import Image from "next/image";
 
 
 const HeroSection = () => {
@@ -220,11 +221,14 @@ const BestDeals = () => {
               whileHover={{ scale: 1.001 }}
               
             >
-              <img
-                src={deal.product_image}
-                alt={deal.product_name}
-                className="w-full h-48 object-cover hover:scale-100 transition-all duration-700 scale-105"
-              />
+             <Image
+  src={deal.product_image}
+  alt={deal.product_name}
+  width={400} // Adjust as needed
+  height={200} // Adjust as needed
+  className="object-cover w-full h-48 transition-transform duration-700 hover:scale-105"
+/>
+
               <div className="p-4">
                 <h3 className="text-lg font-semibold mb-2">{deal.product_name}</h3>
                 <p className="text-blue-600 font-bold">{deal.product_discount}% Off</p>

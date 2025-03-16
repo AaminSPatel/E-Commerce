@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useShop } from "../shopContext";
+import Image from "next/image";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -148,7 +149,9 @@ const ContactPage = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="py-6"
         >
-          <img
+          <Image
+        height={200}
+        width={200}
             src="/bg/bg5.jpg"
             alt="Company Team"
             className="w-full sm:h-72 md:h-96  object-cover  rounded-lg shadow-md"

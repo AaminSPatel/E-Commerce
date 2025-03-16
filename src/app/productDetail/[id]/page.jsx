@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Heart, ShoppingCart } from "lucide-react";
 import { useShop } from "../../shopContext";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
+import Image from "next/image";
 
 export default function ProductOpen() {
   const [product, setProduct] = useState(null);
@@ -59,7 +60,9 @@ export default function ProductOpen() {
         <div className="lg:flex lg:h-[90vh]">
           <div className="lg:w-1/2">
             <div className="h-72 md:h-[70vh] lg:h-[90vh] relative">
-              <img
+              <Image
+        height={200}
+        width={200}
                 src={product.product_image}
                 alt={product.product_name}
                 layout="fill"

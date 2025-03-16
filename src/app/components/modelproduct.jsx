@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useShop } from "../shopContext";
+import Image from "next/image";
 
 const UpdateProductModal = ({ product, onClose, onUpdate }) => {
     const {path, items} = useShop()
@@ -58,7 +59,7 @@ useEffect(() => {
             updateFormData.append("description", formData.description);
 
             if (image) {
-                console.log(image);
+                //console.log(image);
                 updateFormData.append("product_image", image); // Send image file
             }
 else{
@@ -98,13 +99,14 @@ else{
                     
 <div className="flex">
     <label className="block mb-2">Current Image:</label>
-                    <img src={product.product_image} alt="Product" className="w-20 shadow-amber-100 shadow-2xl h-12 object-cover rounded" />
+                    <Image
+        height={200}
+        width={200} src={product.product_image} alt="Product" className="w-20 shadow-amber-100 shadow-2xl h-12 object-cover rounded" />
                     
 </div>
                     <div className="flex gap-5">
                         <label className="block mt-2">Upload New Image:</label>
                     <input type="file" name="product_image" onChange={handleImageChange} className="w-full p-1 border rounded" />
-   
                     </div>
                  
                     <div className="flex justify-between ">

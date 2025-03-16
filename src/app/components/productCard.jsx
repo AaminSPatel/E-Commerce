@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import Link  from "next/link";
 import { useShop } from "../shopContext";
+import Image from "next/image";
 import { Loader, Plus, ShoppingCart, Trash2 } from "lucide-react";
 export default function ProductCard(item) {
   const {
@@ -82,23 +83,27 @@ export default function ProductCard(item) {
       transition={{ duration: 0.3 }}
       exit={{ opacity: 0 }}
     >
-      <div className="relative  h-72 overflow-hidden">
-        <Link href={`/productDetail/${item.id}`}>
-          <motion.img
-            src={item.image}
-            alt={item.name}
-            className="w-full h-full object-center"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          />
-        </Link>
-       
-        {item.discount && (
-          <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-            {item.discount}% OFF
-          </span>
-        )}
-      </div>
+     
+     <div className="relative h-72 overflow-hidden">
+  <Link href={`/productDetail/${item.id}`}>
+    <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }} className="relative w-full h-full">
+      <Image
+        src={item.image}
+        alt={item.name}
+        fill // New way in Next.js 13+ (instead of layout="fill")
+        className="object-cover" // Keeps image proportion
+        sizes="(max-width: 768px) 100vw, 50vw" // Optimized sizes
+      />
+    </motion.div>
+  </Link>
+
+  {item.discount && (
+    <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+      {item.discount}% OFF
+    </span>
+  )}
+</div>
+
       <div className="px-3 p-5 space-y-4">
         <div>
           <div className="flex justify-between items-start">

@@ -363,7 +363,7 @@ export default function AdminDashboard() {
                   5
                 </span>
               </button>
-              <div className="flex items-center hidden">
+              <div className="fle items-center hidden">
                 <img src="/placeholder.svg?height=32&width=32" alt="Admin" className="w-8 h-8 rounded-full mr-2" />
                 <span className="hidden md:inline-block">Admin User</span>
               </div>
