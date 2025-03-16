@@ -14,8 +14,8 @@ import {
 const ShopContext = createContext();
 
 const ShopContextProvider = ({ children }) => {
-  const path = "http://localhost:3001/";
-  const [userId, setUserId] = useState("");
+ const path = process.env.NEXT_PUBLIC_API_URL; 
+   const [userId, setUserId] = useState("");
   const [items, setItems] = useState([]);
   const [favs, setFavs] = useState([]);
   const [cart, setCart] = useState([]);
@@ -44,6 +44,8 @@ const ShopContextProvider = ({ children }) => {
     fetchData();
   }, []);
 
+  console.log('Path string',path, process.env.NEXT_PUBLIC_API_URL);
+  
 
   const [categories, setCategories] = useState([
     {
@@ -91,31 +93,6 @@ const ShopContextProvider = ({ children }) => {
   ]);
   const [brands, setBrands] = useState([{name:''}]);
 
-  /* 
-const brands = [
-  { id: 1, name: 'Nike', category: 'Sportswear', image: './brand/nike.jpg' },
-  { id: 2, name: 'Apple', category: 'Technology', image: './brand/apple.jpg' },
-  { id: 3, name: 'Zara', category: 'Fashion', image: './brand/zara.jpg' },
-  { id: 4, name: 'Samsung', category: 'Technology', image: './brand/samsung.jpg' },
-  { id: 5, name: 'Adidas', category: 'Sportswear', image: './brand/adidas.jpg' },
-  { id: 6, name: 'H&M', category: 'Fashion', image: './brand/h&m.jpg' },
-  { id: 7, name: 'Sony', category: 'Technology', image: './brand/sony.jpg' },
-  { id: 8, name: 'Puma', category: 'Sportswear', image: './brand/puma.jpg' },
-  { id: 9, name: 'Microsoft', category: 'Technology', image: './brand/microsoft.jpg' },
-  { id: 10, name: 'Uniqlo', category: 'Fashion', image: './brand/uniqlo.jpg' },
-  { id: 11, name: 'Under Armour', category: 'Sportswear', image: './brand/underarmour.jpg' },
-  { id: 12, name: 'Google', category: 'Technology', image: './brand/google.jpg' },
-  { id: 13, name: 'Gucci', category: 'Luxury', image: './brand/gucci.jpg' },
-  { id: 14, name: 'Amazon', category: 'E-commerce', image: './brand/amazon.jpg' },
-  { id: 15, name: 'Tesla', category: 'Automotive', image: './brand/tesla.jpg' },
-  { id: 16, name: 'Lululemon', category: 'Sportswear', image: './brand/lululemon.jpg' },
-  { id: 17, name: 'Louis Vuitton', category: 'Luxury', image: './brand/louisvuitton.jpg' },
-  { id: 18, name: 'Netflix', category: 'Entertainment', image: './brand/netflix.jpg' },
-  { id: 19, name: 'Coca-Cola', category: 'Beverages', image: './brand/cocacola.jpg' },
-  { id: 20, name: 'Disney', category: 'Entertainment', image: './brand/disney.jpg' },
-]
- */
-  // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgyNjljNmQzZTM1MDhiZTUzMDRkYWQiLCJlbWFpbCI6ImVtYUBnLmNvbSIsImlhdCI6MTczNjYwMDAwNiwiZXhwIjoxNzM2Njg2NDA2fQ.6ltk6ZskgGqrX2nyOLihvwR-VieXBu4mhAhh5T-3B0A'
   // Fetch User Details
   const fetchUserDetails = async (token) => {
     try {

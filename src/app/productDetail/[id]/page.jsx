@@ -61,8 +61,7 @@ export default function ProductOpen() {
           <div className="lg:w-1/2">
             <div className="h-72 md:h-[70vh] lg:h-[90vh] relative">
               <Image
-        height={200}
-        width={200}
+        
                 src={product.product_image}
                 alt={product.product_name}
                 layout="fill"
