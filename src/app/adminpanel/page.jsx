@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FiHome,
   FiUsers,
@@ -9,58 +9,104 @@ import {
   FiShoppingCart,
   FiDollarSign,
   FiMenu,
+  FiAward,
   FiX,
   FiLogOut,
   FiSettings,
   FiMail,
-  FiBell,FiMessageSquare,
-} from "react-icons/fi"
-import { BarChart, Bar, PieChart, Pie, Cell, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend } from "recharts"
-import { useShop } from "../shopContext"
-import UpdateProductModal from "../components/modelproduct"
+  FiBell,
+  FiMessageSquare,
+} from "react-icons/fi";
+import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
+import { useShop } from "../shopContext";
+import UpdateProductModal from "../components/modelproduct";
+import useNotifications from "../components/notificationfetcher";
+import Image from "next/image";
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState("dashboard")
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [isSignUp, setIsSignUp] = useState(false)
-  const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1200)
-  const [selectedMessage, setSelectedMessage] = useState(null)
-  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      setWindowWidth(window.innerWidth)
+      setWindowWidth(window.innerWidth);
       if (window.innerWidth < 768) {
-        setIsSidebarOpen(false)
+        setIsSidebarOpen(false);
       } else {
-        setIsSidebarOpen(true)
+        setIsSidebarOpen(true);
       }
-    }
+    };
 
-    window.addEventListener("resize", handleResize)
-    handleResize()
+    window.addEventListener("resize", handleResize);
+    handleResize();
 
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-  const {items,users,orders,contact,user} = useShop()
-  console.log('Contactds',contact);
-  
-  let pendingOrders = orders.filter(item => item.status === 'Pending')
-  console.log('pending orders',pendingOrders);
-  
+  const { items, users, orders, contact, user } = useShop();
+
+  let pendingOrders = orders.filter((item) => item.status === "Pending");
+  //console.log('pending orders',pendingOrders);
+
   // Mock data
   const stats = [
-    { title: "Total Users", value: users.length, icon: <FiUsers />, color: "bg-blue-500" },
-    { title: "Total Products", value: items.length, icon: <FiShoppingBag />, color: "bg-green-500" },
-    { title: "Total Orders", value: orders.length, icon: <FiShoppingCart />, color: "bg-purple-500" },
-    { title: "Pending Orders", value: pendingOrders.length, icon: <FiShoppingCart />, color: "bg-yellow-500" },
-    { title: "Total Revenue", value: "$42,582", icon: <FiDollarSign />, color: "bg-red-500" },
-    { title: "Avg. Order Value", value: "$86.24", icon: <FiDollarSign />, color: "bg-indigo-500" },
-  ]
+    {
+      title: "Total Users",
+      value: users.length,
+      icon: <FiUsers />,
+      color: "bg-blue-500",
+    },
+    {
+      title: "Total Products",
+      value: items.length,
+      icon: <FiShoppingBag />,
+      color: "bg-green-500",
+    },
+    {
+      title: "Total Orders",
+      value: orders.length,
+      icon: <FiShoppingCart />,
+      color: "bg-purple-500",
+    },
+    {
+      title: "Pending Orders",
+      value: pendingOrders.length,
+      icon: <FiShoppingCart />,
+      color: "bg-yellow-500",
+    },
+    {
+      title: "Total Revenue",
+      value: "$42,582",
+      icon: <FiDollarSign />,
+      color: "bg-red-500",
+    },
+    {
+      title: "Avg. Order Value",
+      value: "$86.24",
+      icon: <FiDollarSign />,
+      color: "bg-indigo-500",
+    },
+  ];
 
   const barData = [
     { name: "Jan", sales: 4000 },
@@ -69,109 +115,125 @@ export default function AdminDashboard() {
     { name: "Apr", sales: 2780 },
     { name: "May", sales: 1890 },
     { name: "Jun", sales: 2390 },
-  ]
+  ];
 
   const pieData = [
     { name: "Electronics", value: 400 },
     { name: "Clothing", value: 300 },
     { name: "Books", value: 200 },
     { name: "Home", value: 100 },
-  ]
-  const messages = [
+  ];
+
+  /*  const notifications = [
     {
       id: 1,
-      name: "Sarah Wilson",
-      email: "sarah@example.com",
-      subject: "Product Inquiry",
-      message:
-        "Hello, I'm interested in your wireless headphones but I have a few questions about the battery life and warranty. Could you please provide more details?",
-      date: "2023-03-18 09:45 AM",
-      read: true,
+      type: "warning",
+      message: "Inventory low for Wireless Headphones",
+      time: "10 minutes ago",
+      read: false,
     },
     {
       id: 2,
-      name: "David Thompson",
-      email: "david@example.com",
-      subject: "Order Status Update",
-      message:
-        "I placed an order (#ORD-005) three days ago and haven't received any shipping confirmation. Could you please check the status of my order?",
-      date: "2023-03-17 02:30 PM",
+      type: "achievement",
+      message: "Sales target reached for Q1 2023!",
+      time: "2 hours ago",
       read: false,
     },
     {
       id: 3,
-      name: "Lisa Rodriguez",
-      email: "lisa@example.com",
-      subject: "Return Request",
-      message:
-        "I received my order yesterday but the item is damaged. I'd like to return it and get a replacement. What's the procedure for returns?",
-      date: "2023-03-17 11:20 AM",
+      type: "warning",
+      message: "3 orders pending for more than 48 hours",
+      time: "5 hours ago",
       read: false,
     },
     {
       id: 4,
-      name: "Kevin Chen",
-      email: "kevin@example.com",
-      subject: "Website Feedback",
-      message:
-        "I've been using your website for a while now and I have some suggestions for improving the user experience. The checkout process could be streamlined and the product filtering options could be expanded.",
-      date: "2023-03-16 04:15 PM",
+      type: "achievement",
+      message: "New user milestone: 2,500 users registered",
+      time: "Yesterday",
       read: true,
     },
     {
       id: 5,
-      name: "Amanda White",
-      email: "amanda@example.com",
-      subject: "Discount Inquiry",
-      message:
-        "I noticed you're having a sale on electronics. Do you offer any additional discounts for bulk purchases? I'm looking to buy multiple items for my office.",
-      date: "2023-03-16 10:05 AM",
-      read: true,
-    },
-    {
-      id: 6,
-      name: "James Miller",
-      email: "james@example.com",
-      subject: "Account Issue",
-      message:
-        "I'm having trouble logging into my account. I've tried resetting my password but I'm not receiving the reset email. Can you help me resolve this issue?",
-      date: "2023-03-15 03:50 PM",
-      read: false,
-    },
-    {
-      id: 7,
-      name: "Sophia Garcia",
-      email: "sophia@example.com",
-      subject: "Product Suggestion",
-      message:
-        "I love your product range but I think you should consider adding eco-friendly packaging options. Many consumers, including myself, are becoming more environmentally conscious and would appreciate this option.",
-      date: "2023-03-15 01:25 PM",
+      type: "warning",
+      message: "Payment gateway experiencing delays",
+      time: "Yesterday",
       read: true,
     },
   ]
+ */
+  const notification = useNotifications(10000); // Fetch every 10 sec
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notificationData, setNotificationData] = useState([]);
+  // setNotificationData(useNotifications(10000))
+  useEffect(() => {
+    setNotificationData(notification);
+  }, [notification]);
+  const markAsRead = (id) => {
+    setNotificationData(
+      notificationData.map((notification) =>
+        notification._id === id ? { ...notification, read: true } : notification
+      )
+    );
+  };
+
+  const getTimeAgo = (timestamp) => {
+    const now = new Date();
+    const past = new Date(timestamp);
+    const diffInSeconds = Math.floor((now - past) / 1000);
+
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds} seconds ago`;
+    }
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) {
+      return `${diffInMinutes} minutes ago`;
+    }
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) {
+      return `${diffInHours} hours ago`;
+    }
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays === 1) {
+      return "Yesterday";
+    }
+    if (diffInDays < 7) {
+      return `${diffInDays} days ago`;
+    }
+    const diffInWeeks = Math.floor(diffInDays / 7);
+    if (diffInWeeks < 4) {
+      return `${diffInWeeks} weeks ago`;
+    }
+    const diffInMonths = Math.floor(diffInDays / 30);
+    if (diffInMonths < 12) {
+      return `${diffInMonths} months ago`;
+    }
+    const diffInYears = Math.floor(diffInDays / 365);
+    return `${diffInYears} years ago`;
+  };
+
+  const markAllAsRead = () => {
+    setNotificationData(
+      notificationData.map((notification) => ({ ...notification, read: true }))
+    );
+  };
 
   const openMessageModal = (message) => {
-    setSelectedMessage(message)
-    setIsMessageModalOpen(true)
-  }
+    setSelectedMessage(message);
+    setIsMessageModalOpen(true);
+  };
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updatedProduct, setUpdatedProduct] = useState([]);
 
   const handleUpdate = (newProduct) => {
-      setUpdatedProduct(newProduct); // Update state
+    setUpdatedProduct(newProduct); // Update state
   };
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [openPostModel, setOpenPostModel] = useState(false);
 
-  const products = [
-    { id: 1, name: "Wireless Headphones", category: "Electronics", price: "$129.99", stock: 45 },
-    { id: 2, name: "Smart Watch", category: "Electronics", price: "$199.99", stock: 32 },
-    { id: 3, name: "Cotton T-Shirt", category: "Clothing", price: "$24.99", stock: 120 },
-    { id: 4, name: "Running Shoes", category: "Footwear", price: "$89.99", stock: 56 },
-    { id: 5, name: "Bluetooth Speaker", category: "Electronics", price: "$79.99", stock: 23 },
-  ]
-/* 
+  /* 
   const orders = [
     { id: "#ORD-001", customer: "John Doe", date: "2023-03-15", status: "Delivered", total: "$129.99" },
     { id: "#ORD-002", customer: "Jane Smith", date: "2023-03-16", status: "Processing", total: "$224.98" },
@@ -180,7 +242,7 @@ export default function AdminDashboard() {
     { id: "#ORD-005", customer: "Michael Brown", date: "2023-03-17", status: "Pending", total: "$79.99" },
   ]
  */
-/*   const users = [
+  /*   const users = [
     { id: 1, name: "John Doe", email: "john@example.com", role: "Customer", joined: "2023-01-15" },
     { id: 2, name: "Jane Smith", email: "jane@example.com", role: "Customer", joined: "2023-01-20" },
     { id: 3, name: "Robert Johnson", email: "robert@example.com", role: "Admin", joined: "2022-11-05" },
@@ -189,27 +251,27 @@ export default function AdminDashboard() {
   ]
  */
   const handleLogin = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // In a real app, you would validate credentials here
-    setIsAuthenticated(true)
-  }
+    setIsAuthenticated(true);
+  };
 
   const handleSignUp = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // In a real app, you would create a new user here
-    setIsAuthenticated(true)
-  }
+    setIsAuthenticated(true);
+  };
 
   const handleLogout = () => {
-    setIsAuthenticated(false)
-  }
-  useEffect(()=>{
-    console.log(user);
-    
-    if(user.email === 'aamin@gmail.com'){
-      setIsAuthenticated(true)
+    setIsAuthenticated(false);
+  };
+  useEffect(() => {
+    //  console.log(user);
+
+    if (user.email === "aamin@gmail.com") {
+      setIsAuthenticated(true);
     }
-  })
+  });
 
   if (!isAuthenticated) {
     return (
@@ -225,7 +287,10 @@ export default function AdminDashboard() {
 
           <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="email"
+              >
                 Email
               </label>
               <input
@@ -239,7 +304,10 @@ export default function AdminDashboard() {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="password"
+              >
                 Password
               </label>
               <input
@@ -263,13 +331,18 @@ export default function AdminDashboard() {
           </form>
 
           <div className="text-center mt-4">
-            <button className="text-blue-500 hover:text-blue-700 text-sm" onClick={() => setIsSignUp(!isSignUp)}>
-              {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+            <button
+              className="text-blue-500 hover:text-blue-700 text-sm"
+              onClick={() => setIsSignUp(!isSignUp)}
+            >
+              {isSignUp
+                ? "Already have an account? Sign In"
+                : "Don't have an account? Sign Up"}
             </button>
           </div>
         </motion.div>
       </div>
-    )
+    );
   }
 
   return (
@@ -286,49 +359,67 @@ export default function AdminDashboard() {
             <div className="p-4 flex items-center justify-between">
               <h1 className="text-xl font-bold">E-Commerce Admin</h1>
               {windowWidth < 768 && (
-                <button onClick={() => setIsSidebarOpen(false)} className="text-white">
+                <button
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="text-white"
+                >
                   <FiX size={24} />
                 </button>
               )}
             </div>
             <nav className="mt-6">
               <div
-                className={`p-4 flex items-center cursor-pointer ${activeTab === "dashboard" ? "bg-gray-800" : "hover:bg-gray-800"}`}
+                className={`p-4 flex items-center cursor-pointer ${
+                  activeTab === "dashboard"
+                    ? "bg-gray-800"
+                    : "hover:bg-gray-800"
+                }`}
                 onClick={() => setActiveTab("dashboard")}
               >
                 <FiHome className="mr-3" />
                 <span>Dashboard</span>
               </div>
               <div
-                className={`p-4 flex items-center cursor-pointer ${activeTab === "products" ? "bg-gray-800" : "hover:bg-gray-800"}`}
+                className={`p-4 flex items-center cursor-pointer ${
+                  activeTab === "products" ? "bg-gray-800" : "hover:bg-gray-800"
+                }`}
                 onClick={() => setActiveTab("products")}
               >
                 <FiShoppingBag className="mr-3" />
                 <span>Products</span>
               </div>
               <div
-                className={`p-4 flex items-center cursor-pointer ${activeTab === "orders" ? "bg-gray-800" : "hover:bg-gray-800"}`}
+                className={`p-4 flex items-center cursor-pointer ${
+                  activeTab === "orders" ? "bg-gray-800" : "hover:bg-gray-800"
+                }`}
                 onClick={() => setActiveTab("orders")}
               >
                 <FiShoppingCart className="mr-3" />
                 <span>Orders</span>
               </div>
-              
+
               <div
-                className={`p-4 flex items-center cursor-pointer ${activeTab === "users" ? "bg-gray-800" : "hover:bg-gray-800"}`}
+                className={`p-4 flex items-center cursor-pointer ${
+                  activeTab === "users" ? "bg-gray-800" : "hover:bg-gray-800"
+                }`}
                 onClick={() => setActiveTab("users")}
               >
                 <FiUsers className="mr-3" />
                 <span>Users</span>
               </div>
               <div
-                className={`p-4 flex items-center cursor-pointer ${activeTab === "settings" ? "bg-gray-800" : "hover:bg-gray-800"}`}
+                className={`p-4 flex items-center cursor-pointer ${
+                  activeTab === "settings" ? "bg-gray-800" : "hover:bg-gray-800"
+                }`}
                 onClick={() => setActiveTab("settings")}
               >
                 <FiSettings className="mr-3" />
                 <span>Settings</span>
               </div>
-              <div className="p-4 flex items-center cursor-pointer hover:bg-gray-800 mt-auto" onClick={handleLogout}>
+              <div
+                className="p-4 flex items-center cursor-pointer hover:bg-gray-800 mt-auto"
+                onClick={handleLogout}
+              >
                 <FiLogOut className="mr-3" />
                 <span>Logout</span>
               </div>
@@ -348,24 +439,116 @@ export default function AdminDashboard() {
                   <FiMenu size={24} />
                 </button>
               )}
-              <h1 className="text-xl font-semibold">{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</h1>
+              <h1 className="text-xl font-semibold">
+                {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="relative p-2" onClick={() => setActiveTab("messages")}>
+              <button
+                className="relative p-2"
+                onClick={() => setActiveTab("messages")}
+              >
                 <FiMail size={20} />
                 <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                 {contact.length}
+                  {contact.length}
                 </span>
               </button>
-              <button className="relative p-2">
-                <FiBell size={20} />
-                <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                  5
-                </span>
-              </button>
-              <div className="fle items-center hidden">
-                <img src="/placeholder.svg?height=32&width=32" alt="Admin" className="w-8 h-8 rounded-full mr-2" />
-                <span className="hidden md:inline-block">Admin User</span>
+              <div className="relative">
+                <button
+                  className="relative p-2"
+                  onClick={() => setShowNotifications(!showNotifications)}
+                >
+                  <FiBell size={20} />
+                  {notificationData.filter((n) => !n.read).length > 0 && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                      {notificationData.filter((n) => !n.read).length}
+                    </span>
+                  )}
+                </button>
+
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20 overflow-hidden">
+                    <div className="p-3 border-b flex justify-between items-center">
+                      <h3 className="font-semibold">Notifications</h3>
+                      <button
+                        onClick={markAllAsRead}
+                        className="text-xs text-blue-500 hover:text-blue-700"
+                      >
+                        Mark all as read
+                      </button>
+                    </div>
+                    <div className="max-h-96 overflow-y-auto">
+                      {notificationData.length === 0 ? (
+                        <div className="p-4 text-center text-gray-500">
+                          No notifications
+                        </div>
+                      ) : (
+                        notificationData.slice(0, 4).map((notification) => (
+                          <div
+                            key={notification._id}
+                            className={`p-3 border-b hover:bg-gray-50 cursor-pointer ${
+                              notification.read ? "opacity-60" : ""
+                            }`}
+                            onClick={() => markAsRead(notification._id)}
+                          >
+                            <div className="flex items-start">
+                              <div
+                                className={`mt-1 mr-3 p-1 rounded-full ${
+                                  notification.type === "warning"
+                                    ? "bg-yellow-100 text-yellow-500"
+                                    : "bg-green-100 text-green-500"
+                                }`}
+                              >
+                                {notification.type === "warning" ? (
+                                  <FiBell size={16} />
+                                ) : (
+                                  <FiAward size={16} />
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <p
+                                  className={`text-sm ${
+                                    !notification.read ? "font-semibold" : ""
+                                  }`}
+                                >
+                                  {notification.message}
+                                </p>
+                                <p className="text-xs text-gray-500 mt-1">
+                                  {getTimeAgo(notification.time)}
+                                </p>
+                              </div>
+                              {!notification.read && (
+                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              )}
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                    <div className="p-2 border-t text-center">
+                      <button
+                        onClick={() => {
+                          setActiveTab("notifications");
+                          setShowNotifications(false);
+                        }}
+                        className="text-sm text-blue-500 hover:text-blue-700 w-full py-1"
+                      >
+                        View all notifications
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="fle items-center ">
+                <Image
+                  src="/user1.jpg"
+                  height={200}
+                  width={200}
+                  alt="Admin"
+                  className="w-8 h-8 rounded-full mr-2"
+                />
+                <span className="hidden d:inline-block">Aamin</span>
               </div>
             </div>
           </div>
@@ -393,9 +576,15 @@ export default function AdminDashboard() {
                         transition={{ delay: index * 0.1 }}
                         className="bg-white rounded-lg shadow-md p-6 flex items-center"
                       >
-                        <div className={`${stat.color} p-3 rounded-full mr-4 text-white`}>{stat.icon}</div>
+                        <div
+                          className={`${stat.color} p-3 rounded-full mr-4 text-white`}
+                        >
+                          {stat.icon}
+                        </div>
                         <div>
-                          <h3 className="text-gray-500 text-sm">{stat.title}</h3>
+                          <h3 className="text-gray-500 text-sm">
+                            {stat.title}
+                          </h3>
                           <p className="text-2xl font-bold">{stat.value}</p>
                         </div>
                       </motion.div>
@@ -405,7 +594,9 @@ export default function AdminDashboard() {
                   {/* Charts */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     <div className="bg-white p-6 rounded-lg shadow-md">
-                      <h2 className="text-lg font-semibold mb-4">Monthly Sales</h2>
+                      <h2 className="text-lg font-semibold mb-4">
+                        Monthly Sales
+                      </h2>
                       <div className="h-80">
                         <ResponsiveContainer width="100%" height="100%">
                           <BarChart data={barData}>
@@ -419,7 +610,9 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                     <div className="bg-white p-6 rounded-lg shadow-md">
-                      <h2 className="text-lg font-semibold mb-4">Sales by Category</h2>
+                      <h2 className="text-lg font-semibold mb-4">
+                        Sales by Category
+                      </h2>
                       <div className="h-80">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
@@ -431,10 +624,15 @@ export default function AdminDashboard() {
                               outerRadius={80}
                               fill="#8884d8"
                               dataKey="value"
-                              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                              label={({ name, percent }) =>
+                                `${name} ${(percent * 100).toFixed(0)}%`
+                              }
                             >
                               {pieData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                <Cell
+                                  key={`cell-${index}`}
+                                  fill={COLORS[index % COLORS.length]}
+                                />
                               ))}
                             </Pie>
                             <Tooltip />
@@ -449,7 +647,10 @@ export default function AdminDashboard() {
                   <div className="bg-white p-6 rounded-lg shadow-md">
                     <div className="flex justify-between items-center mb-4">
                       <h2 className="text-lg font-semibold">Recent Orders</h2>
-                      <button className="text-blue-500 hover:text-blue-700" onClick={() => setActiveTab("orders")}>
+                      <button
+                        className="text-blue-500 hover:text-blue-700"
+                        onClick={() => setActiveTab("orders")}
+                      >
                         View All
                       </button>
                     </div>
@@ -476,12 +677,16 @@ export default function AdminDashboard() {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                           {orders.map((order) => (
-                            <tr key={order.id} className="hover:bg-gray-50">
+                            <tr key={order._id} className="hover:bg-gray-50">
                               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                 {order._id}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.userId.fullname}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.order_date}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {order.userId.fullname}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {order.order_date}
+                              </td>
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <span
                                   className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -489,14 +694,16 @@ export default function AdminDashboard() {
                                     order.status === "Delivered"
                                       ? "bg-green-100 text-green-800"
                                       : order.status === "Processing"
-                                        ? "bg-blue-100 text-blue-800"
-                                        : "bg-yellow-100 text-yellow-800"
+                                      ? "bg-blue-100 text-blue-800"
+                                      : "bg-yellow-100 text-yellow-800"
                                   }`}
                                 >
                                   {order.status}
                                 </span>
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.total_amount}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {order.total_amount}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -510,7 +717,7 @@ export default function AdminDashboard() {
                 <div className="bg-white p-6 rounded-lg shadow-md">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-semibold">Products</h2>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button onClick={()=>{setOpenPostModel(true)}} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                       Add Product
                     </button>
                   </div>
@@ -534,44 +741,68 @@ export default function AdminDashboard() {
                             Brand
                           </th>
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Availability
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Actions
                           </th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {items.map((product,i) => (
-                          <tr key={product.id} className="hover:bg-gray-50">
+                        {items.map((product, i) => (
+                          <tr key={product._id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {product._id}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.product_name}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.product_category}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.product_price}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.product_brand}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              <button className="text-blue-500 hover:text-blue-700 mr-2">Edit</button>
-                              <button className="text-red-500 hover:text-red-700">Delete</button>
-                             
-<button onClick={() => setSelectedProduct(product)} className="text-green-500 hover:text-green-700 ml-2">
-  Update
-</button>
+                              {product.product_name}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {product.product_category}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {product.product_price}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {product.product_brand}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {product.product_availability}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <button  onClick={() => setSelectedProduct(product)} className="text-blue-500 hover:text-blue-700 mr-2 cursor-pointer">
+                                Edit
+                              </button>
+                              <button className="text-red-500 hover:text-red-700 cursor-pointer">
+                                Delete
+                              </button>
+
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
-                    {selectedProduct  && (
-          <UpdateProductModal
-            product={selectedProduct}
-            onClose={() => setSelectedProduct(null)}
-            onUpdate={handleUpdate}
-          />
-        )}
-
+                    {selectedProduct && (
+                      <UpdateProductModal
+                        product={selectedProduct}
+                        onClose={() => setSelectedProduct(null)}
+                        onUpdate={handleUpdate}
+                        isUpdate={true}
+                      />
+                    )}
                   </div>
+                  {openPostModel && (
+                      <UpdateProductModal
+                        product={[]}
+                        onClose={() => setOpenPostModel(false)}
+                        onUpdate={handleUpdate}
+                        isUpdate={false}
+                      />
+                    )}
+                  
                 </div>
               )}
-{activeTab === "messages" && (
+              {activeTab === "messages" && (
                 <div className="bg-white p-6 rounded-lg shadow-md">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-semibold">Customer Messages</h2>
@@ -581,7 +812,11 @@ export default function AdminDashboard() {
                         <option>Unread</option>
                         <option>Read</option>
                       </select>
-                      <input type="text" placeholder="Search messages..." className="border rounded px-3 py-1" />
+                      <input
+                        type="text"
+                        placeholder="Search messages..."
+                        className="border rounded px-3 py-1"
+                      />
                     </div>
                   </div>
 
@@ -592,7 +827,9 @@ export default function AdminDashboard() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.2 }}
-                        className={`border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors ${!message.read ? "border-l-4 border-l-blue-500" : ""}`}
+                        className={`border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
+                          !message.read ? "border-l-4 border-l-blue-500" : ""
+                        }`}
                         onClick={() => openMessageModal(message)}
                       >
                         <div className="flex justify-between items-start mb-2">
@@ -602,13 +839,19 @@ export default function AdminDashboard() {
                             </div>
                             <div>
                               <h3 className="font-semibold">{message.name}</h3>
-                              <p className="text-sm text-gray-600">{message.email}</p>
+                              <p className="text-sm text-gray-600">
+                                {message.email}
+                              </p>
                             </div>
                           </div>
-                          <div className="text-xs text-gray-500">{message.createdAt}</div>
+                          <div className="text-xs text-gray-500">
+                            {message.createdAt}
+                          </div>
                         </div>
                         <h4 className="font-medium mb-1">{message.subject}</h4>
-                        <p className="text-sm text-gray-600 line-clamp-2">{message.message}</p>
+                        <p className="text-sm text-gray-600 line-clamp-2">
+                          {message.message}
+                        </p>
                       </motion.div>
                     ))}
                   </div>
@@ -625,7 +868,11 @@ export default function AdminDashboard() {
                         <option>Processing</option>
                         <option>Delivered</option>
                       </select>
-                      <input type="text" placeholder="Search orders..." className="border rounded px-3 py-1" />
+                      <input
+                        type="text"
+                        placeholder="Search orders..."
+                        className="border rounded px-3 py-1"
+                      />
                     </div>
                   </div>
                   <div className="overflow-x-auto">
@@ -654,12 +901,16 @@ export default function AdminDashboard() {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {orders.map((order) => (
-                          <tr key={order.id} className="hover:bg-gray-50">
+                          <tr key={order._id} className="hover:bg-gray-50">
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {order._id}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.userId.fullname}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.order_date}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {order.userId.fullname}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {order.order_date}
+                            </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span
                                 className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -667,22 +918,115 @@ export default function AdminDashboard() {
                                   order.status === "Delivered"
                                     ? "bg-green-100 text-green-800"
                                     : order.status === "Processing"
-                                      ? "bg-blue-100 text-blue-800"
-                                      : "bg-yellow-100 text-yellow-800"
+                                    ? "bg-blue-100 text-blue-800"
+                                    : "bg-yellow-100 text-yellow-800"
                                 }`}
                               >
                                 {order.status}
                               </span>
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.total_amount}</td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              <button className="text-blue-500 hover:text-blue-700 mr-2">View</button>
-                              <button className="text-red-500 hover:text-red-700">Cancel</button>
+                              {order.total_amount}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <button className="text-blue-500 hover:text-blue-700 mr-2">
+                                View
+                              </button>
+                              <button className="text-red-500 hover:text-red-700">
+                                Cancel
+                              </button>
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "notifications" && (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <div className="flex justify-between items-center mb-2">
+                    <h2 className="text-lg font-semibold">All Notifications</h2>
+                    <div className="flex space-x-2">
+                      <select className="border rounded px-3 py-1">
+                        <option>All Types</option>
+                        <option>Warnings</option>
+                        <option>Achievements</option>
+                      </select>
+                      <button
+                        onClick={markAllAsRead}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm"
+                      >
+                        Mark all as read
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {notificationData.map((notification) => (
+                      <div
+                        key={notification._id}
+                        className={`p-4 border rounded-lg ${
+                          notification.read ? "bg-white" : "bg-blue-50"
+                        } ${
+                          notification.type === "warning"
+                            ? "border-yellow-200"
+                            : "border-green-200"
+                        }`}
+                      >
+                        <div className="flex items-start">
+                          <div
+                            className={`p-2 rounded-full mr-4 ${
+                              notification.type === "warning"
+                                ? "bg-yellow-100 text-yellow-500"
+                                : "bg-green-100 text-green-500"
+                            }`}
+                          >
+                            {notification.type === "warning" ? (
+                              <FiBell size={20} />
+                            ) : (
+                              <FiAward size={20} />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex justify-between">
+                              <h3
+                                className={`font-medium ${
+                                  !notification.read ? "font-semibold" : ""
+                                }`}
+                              >
+                                {notification.message}
+                              </h3>
+                              <span className="text-sm text-gray-500">
+                                {getTimeAgo(notification.time)}
+                              </span>
+                            </div>
+                            <div className="flex justify-between mt-2">
+                              <span
+                                className={`text-sm px-2 py-1 rounded ${
+                                  notification.type === "warning"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-green-100 text-green-800"
+                                }`}
+                              >
+                                {notification.type === "warning"
+                                  ? "Warning"
+                                  : "Achievement"}
+                              </span>
+                              {!notification.read && (
+                                <button
+                                  onClick={() => markAsRead(notification._id)}
+                                  className="text-sm text-blue-500 hover:text-blue-700"
+                                >
+                                  Mark as read
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -711,7 +1055,7 @@ export default function AdminDashboard() {
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             City
                           </th>
-                        
+
                           <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Actions
                           </th>
@@ -720,14 +1064,26 @@ export default function AdminDashboard() {
                       <tbody className="bg-white divide-y divide-gray-200">
                         {users.map((user) => (
                           <tr key={user._id} className="hover:bg-gray-50">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user._id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.fullname}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
-                            
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.city}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {user._id}
+                            </td>
                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                              <button className="text-blue-500 hover:text-blue-700 mr-2">Edit</button>
-                              <button className="text-red-500 hover:text-red-700">Delete</button>
+                              {user.fullname}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {user.email}
+                            </td>
+
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {user.city}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <button className="text-blue-500 hover:text-blue-700 mr-2">
+                                Edit
+                              </button>
+                              <button className="text-red-500 hover:text-red-700">
+                                Delete
+                              </button>
                             </td>
                           </tr>
                         ))}
@@ -742,14 +1098,24 @@ export default function AdminDashboard() {
                   <h2 className="text-lg font-semibold mb-4">Settings</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <h3 className="text-md font-medium mb-3">Account Settings</h3>
+                      <h3 className="text-md font-medium mb-3">
+                        Account Settings
+                      </h3>
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                          <input type="text" className="w-full border rounded-md px-3 py-2" defaultValue="Admin User" />
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Name
+                          </label>
+                          <input
+                            type="text"
+                            className="w-full border rounded-md px-3 py-2"
+                            defaultValue="Admin User"
+                          />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Email
+                          </label>
                           <input
                             type="email"
                             className="w-full border rounded-md px-3 py-2"
@@ -757,7 +1123,9 @@ export default function AdminDashboard() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Password
+                          </label>
                           <input
                             type="password"
                             className="w-full border rounded-md px-3 py-2"
@@ -767,10 +1135,14 @@ export default function AdminDashboard() {
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-md font-medium mb-3">Store Settings</h3>
+                      <h3 className="text-md font-medium mb-3">
+                        Store Settings
+                      </h3>
                       <div className="space-y-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Store Name</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Store Name
+                          </label>
                           <input
                             type="text"
                             className="w-full border rounded-md px-3 py-2"
@@ -778,7 +1150,9 @@ export default function AdminDashboard() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Currency
+                          </label>
                           <select className="w-full border rounded-md px-3 py-2">
                             <option>USD ($)</option>
                             <option>EUR (€)</option>
@@ -786,7 +1160,9 @@ export default function AdminDashboard() {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Timezone</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Timezone
+                          </label>
                           <select className="w-full border rounded-md px-3 py-2">
                             <option>UTC-8 (Pacific Time)</option>
                             <option>UTC-5 (Eastern Time)</option>
@@ -808,57 +1184,64 @@ export default function AdminDashboard() {
                 </div>
               )}
 
-               {/* Message Modal */}
-      {isMessageModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col"
-          >
-            <div className="p-4 border-b flex justify-between items-center">
-              <div>
-                <h3 className="font-bold text-lg">{selectedMessage?.subject}</h3>
-                <p className="text-sm text-gray-600">
-                  From: {selectedMessage?.name} ({selectedMessage?.email})
-                </p>
-              </div>
-              <button onClick={() => setIsMessageModalOpen(false)} className="text-gray-500 hover:text-gray-700">
-                <FiX size={24} />
-              </button>
-            </div>
-            <div className="p-4 overflow-y-auto flex-grow">
-              <div className="flex items-start mb-4">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">
-                  {selectedMessage?.name.charAt(0)}
+              {/* Message Modal */}
+              {isMessageModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col"
+                  >
+                    <div className="p-4 border-b flex justify-between items-center">
+                      <div>
+                        <h3 className="font-bold text-lg">
+                          {selectedMessage?.subject}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          From: {selectedMessage?.name} (
+                          {selectedMessage?.email})
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setIsMessageModalOpen(false)}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <FiX size={24} />
+                      </button>
+                    </div>
+                    <div className="p-4 overflow-y-auto flex-grow">
+                      <div className="flex items-start mb-4">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">
+                          {selectedMessage?.name.charAt(0)}
+                        </div>
+                        <div className="bg-gray-100 rounded-lg p-3 max-w-[80%]">
+                          <p className="text-sm">{selectedMessage?.message}</p>
+                          <span className="text-xs text-gray-500 mt-1 block">
+                            {selectedMessage?.date}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4 border-t bg-gray-50 rounded-b-lg">
+                      <div className="flex items-center">
+                        <div className="text-gray-500 italic flex-grow">
+                          <p>Reply functionality is disabled for this demo.</p>
+                        </div>
+                        <button
+                          onClick={() => setIsMessageModalOpen(false)}
+                          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
-                <div className="bg-gray-100 rounded-lg p-3 max-w-[80%]">
-                  <p className="text-sm">{selectedMessage?.message}</p>
-                  <span className="text-xs text-gray-500 mt-1 block">{selectedMessage?.date}</span>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 border-t bg-gray-50 rounded-b-lg">
-              <div className="flex items-center">
-                <div className="text-gray-500 italic flex-grow">
-                  <p>Reply functionality is disabled for this demo.</p>
-                </div>
-                <button
-                  onClick={() => setIsMessageModalOpen(false)}
-                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded ml-2"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      )}
+              )}
             </motion.div>
           </AnimatePresence>
         </main>
       </div>
     </div>
-  )
+  );
 }
-

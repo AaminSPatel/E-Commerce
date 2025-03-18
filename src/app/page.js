@@ -47,14 +47,8 @@ const HeroSection = () => {
 
   return (
     <section className="bg-gradient-to-br from-blue-100 to-cyan-100 text-black  max-h-screen">
-      <div className="absolute min-h-screen h-screen w-full top-0  text-7xl flex items-center justify-center ">
-        <div className="reletive h-[90%] overflow-hidden w-[90%] ">
-           <span className="absolute animate1 h-16 w-16 bg-gradient-to- from-blue-300 to-cyan-100  backdrop-blur-3xl scale-150  rounded-full " ></span>
-        <span className="absolute animate2 h-16 w-16 backdrop-blur-3xl scale-150  rounded-full "></span>
       
-        </div>
-       </div>
-      <div className="bg-gradient-to-br from-blue-100  to-cyan-100 text-black min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 z-40 bg-opacity-95 bg-cover" style={{backgroundImage:'url("./bg/bg4.jpg")'}}>
+      <div className="bg-gradient-to-br from-blue-100  to-cyan-100 text-black min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 z-40 bg-opacity-95 bg-cover" style={{backgroundImage:'url("./hero.jpg")'}}>
         <motion.div
           className="max-w-7xl mx-auto text-center z-40"
           variants={containerVariants}
@@ -226,7 +220,7 @@ const BestDeals = () => {
   alt={deal.product_name}
   width={400} // Adjust as needed
   height={200} // Adjust as needed
-  className="object-cover w-full h-48 transition-transform duration-700 hover:scale-105"
+  className="object-cover w-full sm:h-48 transition-transform duration-700 hover:scale-105"
 />
 
               <div className="p-4">

@@ -14,7 +14,8 @@ import {
 const ShopContext = createContext();
 
 const ShopContextProvider = ({ children }) => {
- const path = process.env.NEXT_PUBLIC_API_URL; 
+ //const path = process.env.NEXT_PUBLIC_API_URL; 
+ const path = 'http://localhost:3005/'; 
    const [userId, setUserId] = useState("");
   const [items, setItems] = useState([]);
   const [favs, setFavs] = useState([]);
@@ -26,16 +27,21 @@ const ShopContextProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [orders, setOrders] = useState([]);
   const [contact, setContact] = useState([]);
+  const [notification, setNotification] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [usersRes, ordersRes, productsRes] = await Promise.all([
+        const [usersRes, ordersRes, notificationRes] = await Promise.all([
           axios.get(`${path}user/`),
           axios.get(`${path}order/`),
+         // axios.get(`${path}notification/`),
         ]);
 
         setUsers(usersRes.data);
         setOrders(ordersRes.data);
+        //setNotification(notificationRes.data)
+       // console.log(notificationRes.data,'Notification');
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -44,7 +50,7 @@ const ShopContextProvider = ({ children }) => {
     fetchData();
   }, []);
 
-  console.log('Path string',path, process.env.NEXT_PUBLIC_API_URL);
+ // console.log('Path string',path, process.env.NEXT_PUBLIC_API_URL);
   
 
   const [categories, setCategories] = useState([
@@ -111,7 +117,7 @@ const ShopContextProvider = ({ children }) => {
       const response = await fetch(`${path}product`);
       const data = await response.json();
       setItems(data);
-console.log(data);
+//console.log(data);
 
       // Extract unique categories from products
       const uniqueCategories = [
@@ -147,7 +153,7 @@ console.log(data);
           return existingBrand || { name: brand, productCount: 0 }; // Adjust as needed
         });
       });
-      console.log(brands);
+      //console.log(brands);
       
     } catch (error) {
       console.error("Error fetching products:", error.message);
@@ -193,16 +199,7 @@ console.log(data);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [brand, setBrand] = useState("All");
-  /*  const categories = [
-    "All",
-    "Electronics",
-    "Wearable",
-    "Home Appliances",
-    "Accessories",
-    "Kitchen Appliances"
-  ];
- */
-
+ 
   //console.log(items);
 
   /* const categories = [
@@ -237,7 +234,7 @@ console.log(data);
         setToken(token);
         setMess({message:message, type:'success'})
         localStorage.setItem("JwtToken", token);
-        console.log("Token stored in localStorage successfully!",message);
+       // console.log("Token stored in localStorage successfully!",message);
       } else {
         console.error(
           "Token or User ID is missing in the response:",
@@ -263,7 +260,7 @@ console.log(data);
         setToken(token);
         setMess({message:message, type:'success'})
         localStorage.setItem("JwtToken", token);
-        console.log("Token stored in localStorage successfully!", message);
+      //  console.log("Token stored in localStorage successfully!", message);
       } else {
         console.error("Token or User ID is missing in the response:", response.data);
       }
@@ -285,13 +282,13 @@ console.log(data);
             console.log(data);
           }
         });
-      console.log(response);
+     // console.log(response);
     } catch (err) {
       console.log(err);
     }
   };
   const handleCartRemove = async (cartId) => {
-    console.log(userId);
+   // console.log(userId);
     let userid = userId;
     try {
       const res = await axios
@@ -397,7 +394,7 @@ console.log(data);
   return (
     <ShopContext.Provider
       value={{
-        items,
+        items,setItems,
         userId,
         handleAddFav,
         favs,handleSignIn,

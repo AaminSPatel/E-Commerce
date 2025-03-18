@@ -114,7 +114,7 @@ export default function ProductCard(item) {
             <span className="text-xs font-medium bg-gray-100 hidden px-1 py-1 rounded-full ">{item.category}</span>
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-gray-900">${item.price.toFixed(2)}</span>
+            <span className="text-xl font-medium text-gray-900 popin">${item.price.toFixed(2)}</span>
             {item.originalPrice && (
               <span className="text-sm text-gray-500 line-through">${item.originalPrice.toFixed(2)}</span>
             )}
