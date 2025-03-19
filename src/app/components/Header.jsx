@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useShop } from "../shopContext.jsx";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +21,12 @@ const Navbar = () => {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isBrandOpen, setIsBrandOpen] = useState(false);
 
+  const [cartLength,setCartLength] = useState(null)
+  const [favLength,setFavLength] = useState(null)
+  useEffect(()=>{
+    cart.length ?setCartLength(cart.length) : ''
+    favs.length ? setFavLength( favs.length) : ''
+  }, [cart , favs])
   return (
     <motion.nav
       className="sticky top-0 z-50 bg-white shadow-lg text-black"
@@ -32,7 +38,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold text-blue-400">
-            E-Shop
+            Iqra E-comm
           </Link>
 
           {/* Desktop Menu */}
@@ -104,16 +110,16 @@ const Navbar = () => {
             <Link href="/favorites" className="p-2 relative">
               <Heart className="h-5 w-5" />
              
-               {favs.length?   <span className="absolute top-0 right-0 h-4 w-4 bg-red-400 text-white rounded-full flex items-center justify-center text-sm">
-                  {favs.length}
+               {favLength ?   <span className="absolute top-0 right-0 h-4 w-4 bg-red-400 text-white rounded-full flex items-center justify-center text-sm">
+                  {favLength}
                 </span>:''}
       
             </Link>
 
             <Link href="/cart" className="p-2 relative">
               <ShoppingCart className="h-5 w-5" />
-              {cart.length >0 ? <span className="absolute left-7 top-1 h-4 w-4 bg-red-400 text-white rounded-full flex items-center justify-center text-sm">
-                {cart.length}
+              {cartLength >0 ? <span className="absolute left-7 top-1 h-4 w-4 bg-red-400 text-white rounded-full flex items-center justify-center text-sm">
+                {cartLength}
                 
                 </span>:''}
             </Link>

@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { User, Package, Heart, Settings } from "lucide-react";
+import { User, Package, Heart, Settings, LogOut } from "lucide-react";
 import { useShop } from "../shopContext";
 import { format } from "date-fns";
 import Link from "next/link";
@@ -381,14 +381,14 @@ const Setting = () => {
         </motion.button>
         
       </form>
-      {/* Submit Button */}
+      {/* Logout Button */}
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={()=>{localStorage.setItem("JwtToken",''),setUser({})}}
-          className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="py-2 px-4 flex items-center gap-3 border mt-3 border-transparent rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
-          Logout
+         <LogOut/> Logout
         </motion.button>
     </motion.div>
   );

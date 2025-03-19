@@ -72,6 +72,11 @@ function SignInForm() {
     }, 3000)
    
   };
+  const handleChange = (e) =>{
+    e.preventDefault()
+    e.target.type=='email'? setEmail(e.target.value):''
+    e.target.type=='password'? setPassword(e.target.value):''
+  }
   useEffect(() => {
     if (mess.type === 'success') {
       router.push('/');
@@ -81,8 +86,8 @@ function SignInForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {mess.message && <Notification message={mess.message} type={mess.type} />}
-      <InputField id="email" label="Email" type="email" value={email} onChange={setEmail} />
-      <InputField id="password" label="Password" type="password" value={password} onChange={setPassword} />
+      <InputField id="email" label="Email" type="email" value={email} onChange={handleChange} />
+      <InputField id="password" label="Password" type="password" value={password} onChange={handleChange} />
       <SubmitButton text="Sign In" />
     </form>
   );
@@ -135,7 +140,7 @@ function InputField({ id, label, type, value, onChange, name }) {
         name={name}
         type={type}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={onChange}
         required
         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       />
