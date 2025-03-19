@@ -6,18 +6,18 @@ import { useShop } from "../shopContext";
 import { format } from "date-fns";
 import Link from "next/link";
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
 const TabButton = ({ icon: Icon, label, isActive, onClick }) => (
   <motion.button
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
-    className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
+    className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg ${
       isActive ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-100"
     }`}
     onClick={onClick}
   >
     <Icon size={20} />
-    <span>{label}</span>
+    <span className="hidden sm:inline">{label}</span>
   </motion.button>
 );
 
@@ -119,8 +119,8 @@ const ProfileDashboard = () => {
   ]);
   const [userData,setUserData] = useState({})
   const [allOrder, setAllOrder] = useState([]);
-  const { favs, handleAddFav, order, setOrder,user } = useShop();
-
+  const { favs, handleAddFav, order, setOrder,user  } = useShop();
+  const router = useRouter();
   useEffect(() => {
     setFavoriteItems(favs);
   }, [favs]);
@@ -149,82 +149,101 @@ const ProfileDashboard = () => {
   
 
   return (
-    <div className="min-h-screen text-gray-900 bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className=" text-gray-900 bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      
+      {userData ? 
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <div className="flex items-center space-x-4 mb-6">
-            <Image
-        height={200}
-        width={200}
-              src="/user1.jpg"
-              alt="Profile"
-              className="w-20 h-20 rounded-full"
-            />
-            <div>
-              <h1 className="text-2xl font-bold">{userData.fullname}</h1>
-              { userData.email !== 'aamin@gmail.com' ?
-                
-                <p className="text-gray-600">{userData.email}</p> :<Link href='/adminpanel' ><p className="text-yellow-600">{userData.email}</p></Link>  }
-            </div>
-          </div>
-          <div className="flex space-x-4">
-            <TabButton
-              icon={Package}
-              label="Purchase History"
-              isActive={activeTab === "purchases"}
-              onClick={() => setActiveTab("purchases")}
-            />
-            <TabButton
-              icon={Heart}
-              label="Favorites"
-              isActive={activeTab === "favorites"}
-              onClick={() => setActiveTab("favorites")}
-            />
-            <TabButton
-              icon={Settings}
-              label="Settings"
-              isActive={activeTab === "settings"}
-              onClick={() => setActiveTab("settings")}
-            />
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="flex items-center space-x-4 mb-6">
+          <Image
+      height={200}
+      width={200}
+            src="/user1.jpg"
+            alt="Profile"
+            className="w-20 h-20 rounded-full"
+          />
+          <div>
+            <h1 className="text-2xl font-bold">{userData.fullname}</h1>
+            { userData.email !== 'aamin@gmail.com' ?
+              
+              <p className="text-gray-600">{userData.email}</p> :<Link href='/adminpanel' ><p className="text-yellow-600">{userData.email}</p></Link>  }
           </div>
         </div>
+        <div className="flex space-x-4 justify-evenly ">
+  <TabButton
+    icon={Package}
+    label={'Purchase History'}
+    isActive={activeTab === "purchases"}
+    onClick={() => setActiveTab("purchases")}
+  />
+  <TabButton
+    icon={Heart}
+    label={'Favorites'}
+    isActive={activeTab === "favorites"}
+    onClick={() => setActiveTab("favorites")}
+  />
+  <TabButton
+    icon={Settings}
+    label={'Settings'}
+    isActive={activeTab === "settings"}
+    onClick={() => setActiveTab("settings")}
+  />
+</div>
 
-        {activeTab === "purchases" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <h2 className="text-2xl font-bold mb-4">Purchase History</h2>
-            {allOrder.map((order) => (
-              <PurchaseHistoryItem key={order._id} order={order}  onEdit={handleEditOrder}/>
-            ))}
-          </motion.div>
-        )}
-
-        {activeTab === "favorites" && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <h2 className="text-2xl font-bold mb-4">Favorite Items</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {favoriteItems.map((item) => (
-                <FavoriteItem
-                  key={item._id}
-                  item={item}
-                  onRemove={removeFavoriteItem}
-                />
-              ))}
-            </div>
-          </motion.div>
-        )}
-
-        {activeTab === "settings" && (
-          <Setting/>
-        )}
       </div>
+
+      {activeTab === "purchases" && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <h2 className="text-2xl font-bold mb-4">Purchase History</h2>
+          {allOrder.map((order) => (
+            <PurchaseHistoryItem key={order._id} order={order}  onEdit={handleEditOrder}/>
+          ))}
+        </motion.div>
+      )}
+
+      {activeTab === "favorites" && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <h2 className="text-2xl font-bold mb-4">Favorite Items</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {favoriteItems.map((item) => (
+              <FavoriteItem
+                key={item._id}
+                item={item}
+                onRemove={removeFavoriteItem}
+              />
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {activeTab === "settings" && (
+        <Setting/>
+      )}
+    </div>
+      : <div className="w-full h-[60vh] flex items-center justify-center bg-gradient-to-r  from-gray-800 to-slate-900 rounded-2xl">
+         <div className="bg-gradient-to-r  from-blue-500 to-indigo-600 text-white p-10 rounded-xl shadow-2xl text-center w-full mx-auto max-w-lg">
+          <h2 className="text-2xl font-bold mb-4">
+            🚀 Your Journey Starts Here!
+          </h2>
+          <p className="text-lg mb-6">
+            “Opportunities don’t happen, you create them.”  
+            **Join now and unlock exclusive benefits!**
+          </p>
+          <button
+            onClick={() => router.push("/auth")}
+            className="bg-amber-400 text-gray-900 font-bold py-3 px-6 rounded-full shadow-lg hover:bg-amber-500 transition-all duration-300"
+          >
+            Create Account & Unlock Features 🚀
+          </button>
+        </div></div>}
     </div>
   );
 };
@@ -238,36 +257,18 @@ const Setting = () => {
     city: "",
   });
 
-  const {path, userId, token} = useShop()
+  const {path, userId,user} = useShop()
   // Fetch existing user data
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`${path}user/${userId}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) throw new Error("Failed to fetch user data");
-        const userData = await response.json();
-
-        // Populate state with user data
-        setFormData({
-          fullname: userData.fullname || "",
-          mobile: userData.mobile || "",
-          town: userData.town || "",
-          pincode: userData.pincode || "",
-          city: userData.city || "",
-        });
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    if (userId) fetchUserData();
-  }, [userId, token]);
+   
+    if (userId)  setFormData({
+      fullname: user.fullname || "",
+      mobile: user.mobile || "",
+      town: user.town || "",
+      pincode: user.pincode || "",
+      city: user.city || "",
+    }); ;
+  }, [userId,user]);
 
   // Handle Input Change
   const handleChange = (e) => {

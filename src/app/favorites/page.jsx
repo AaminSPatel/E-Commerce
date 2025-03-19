@@ -1,17 +1,21 @@
 "use client";
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import  Link  from "next/link";
-import { Heart, ShoppingBag, Trash2, ChevronLeft } from "lucide-react"
+import { Heart, ShoppingBag, Trash2, ChevronLeft, LogIn } from "lucide-react"
 import { motion } from "framer-motion"
 import { useShop } from "../shopContext"
 import ProductCard from "../components/productCard"
 
 const FavoritesPage = () => {
   // This would typically come from a state management solution like Redux or Context
-  const {favs} = useShop()
+  const {favs , user} = useShop()
   //console.log(favs);
-  
+  const [isLogin, setIsLogin] = useState(false)
+  useEffect(()=>{
+
+   user ? setIsLogin(true) : setIsLogin(false) 
+  },[user])
  
 
   // Animation variants
@@ -25,75 +29,40 @@ const FavoritesPage = () => {
     },
   }
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-      },
-    },
-  }
-
-  const heroVariants = {
-    hidden: { opacity: 0, y: -20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
-    },
-  }
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <motion.section
-      className="relative py-8 md:py-14 bg-gradient-to-br from-indigo-900 via-purple-800 to-indigo-900 text-white overflow-hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
+  className="relative py-6 text-center text-black"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 0.8 }}
+>
+  <div className="container mx-auto px-6 md:px-12">
+    
+    <motion.h1
+      className="text-3xl md:text-4xl font-extrabold mt-4"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
     >
-      <div className="container mx-auto px-6 md:px-12 relative z-10">
-        <div className="flex flex-col items-center text-center space-y-6">
-          <motion.div
-            className="inline-flex items-center justify-center rounded-full bg-white/10 p-3 backdrop-blur-lg shadow-lg"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Heart className="h-8 w-8 text-pink-400" />
-          </motion.div>
-          <motion.h1
-            className="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-indigo-300"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            Your Favorite Picks
-          </motion.h1>
-          <motion.p
-            className="max-w-2xl text-lg text-gray-300"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            Curate your collection of saved items and rediscover what you love, anytime.
-          </motion.p>
-        </div>
-      </div>
-      
-      {/* Glowing Background Effects */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/3 top-0 h-[400px] w-[400px] bg-pink-400/20 blur-[120px]"></div>
-        <div className="absolute right-1/3 bottom-0 h-[400px] w-[400px] bg-indigo-400/20 blur-[120px]"></div>
-      </div>
-    </motion.section>
+      Your Favorite Picks
+    </motion.h1>
+
+    <motion.p
+      className="max-w-xl mx-auto text-lg text-gray-600 mt-2"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 }}
+    >
+      Save the items you love and find them all in one place.
+    </motion.p>
+  </div>
+</motion.section>
+
       {/* Favorites Content */}
-      <section className="py-12">
+      <section className="py-6">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-2">
@@ -120,7 +89,7 @@ const FavoritesPage = () => {
             )}
           </div>
 
-          {favs.length > 0 ? (
+          {isLogin ? favs.length > 0 ? (
             <motion.div
               className="flex items-center justify-center flex-wrap gap-6"
               variants={containerVariants}
@@ -169,7 +138,35 @@ const FavoritesPage = () => {
                 </Link>
               </motion.div>
             </motion.div>
-          )}
+          ) : <motion.div
+          className="flex flex-col items-center mx-auto justify-center py-16 text-center bg-white shadow-xl rounded-xl p-6 w-full max-w-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div
+            className="rounded-full bg-blue-100 p-6 mb-4"
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 100 }}
+          >
+            <LogIn className="h-10 w-10 text-blue-600" />
+          </motion.div>
+          <h3 className="text-xl font-semibold mb-2 text-gray-900">
+            Unlock Your Favorites 💖
+          </h3>
+          <p className="text-gray-500 max-w-md mb-6">
+            “Your dream items are just a heart away! Sign up now and never lose sight of what you love.”
+          </p>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Link
+              href="/auth"
+              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Login / Sign Up
+            </Link>
+          </motion.div>
+        </motion.div>}
         </div>
       </section>
     </div>

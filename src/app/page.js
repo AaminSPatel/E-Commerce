@@ -21,10 +21,7 @@ const HeroSection = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        duration: 0.5,
-        staggerChildren: 0.1,
-      },
+      transition: { duration: 0.5, staggerChildren: 0.1 },
     },
   };
 
@@ -39,67 +36,66 @@ const HeroSection = () => {
 
   const floatingIconVariants = {
     initial: { y: 0 },
-    animate: {
-      y: [-10, 10, -10],
-      transition: { repeat: Infinity, duration: 3 },
-    },
+    animate: { y: [-10, 10, -10], transition: { repeat: Infinity, duration: 3 } },
   };
 
   return (
-    <section className="bg-gradient-to-br from-blue-100 to-cyan-100 text-black  max-h-screen">
-      
-      <div className="bg-gradient-to-br from-blue-100  to-cyan-100 text-black min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 z-40 bg-opacity-95 bg-cover" style={{backgroundImage:'url("./hero.jpg")'}}>
+    <section className="bg-white text-black min-h-screen flex items-center justify-center px-4">
+      <div className="relative w-full max-w-7xl mx-auto text-center bg-center bg-cover">
         <motion.div
-          className="max-w-7xl mx-auto text-center z-40"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          className="flex flex-col items-center space-y-6 mt-12"
         >
           <motion.h1
-            className="text-4xl sm:text-6xl font-extrabold mb-6"
+            className="text-3xl sm:text-5xl font-extrabold leading-tight"
             variants={itemVariants}
           >
             Discover the Future of Shopping
           </motion.h1>
           <motion.p
-            className="text-xl sm:text-2xl mb-12 max-w-3xl mx-auto"
+            className="text-lg sm:text-xl text-gray-700 max-w-xl"
             variants={itemVariants}
           >
-            Immerse yourself in a world of endless possibilities, where style
-            meets innovation.
+            Immerse yourself in a world of endless possibilities, where style meets innovation.
           </motion.p>
+
           <motion.div
-            className="flex flex-col sm:flex-row justify-center items-center gap-4"
+            className="flex flex-col sm:flex-row gap-4"
             variants={itemVariants}
-          ><Link href={'/products'}>
-            <motion.button
-              className="bg-white text-blue-600 font-bold py-3 px-8 rounded-full hover:bg-blue-200 transition duration-300 flex items-center"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onHoverStart={() => setIsHovered(true)}
-              onHoverEnd={() => setIsHovered(false)}
-            >
-              Start Exploring
-              
-              <motion.span
-                initial={{ x: 0 }}
-                animate={{ x: isHovered ? 5 : 0 }}
-                transition={{ type: "spring", stiffness: 300 }}
+          >
+            <Link href="/products">
+              <motion.button
+                className="bg-blue-600 w-60 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onHoverStart={() => setIsHovered(true)}
+                onHoverEnd={() => setIsHovered(false)}
               >
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </motion.span>
-            </motion.button></Link>
+                Start Exploring
+                <motion.span
+                  initial={{ x: 0 }}
+                  animate={{ x: isHovered ? 5 : 0 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <ChevronRight className="ml-2 h-5 w-5" />
+                </motion.span>
+              </motion.button>
+            </Link>
+
             <motion.a
               href="#featured-products"
-              className="text-blue-500 font-semibold py-3 px-8 rounded-full border-2 border-white hover:bg-white hover:text-blue-600 transition duration-300"
+              className="text-blue-600 font-semibold py-3 px-6 rounded-lg border-2 border-blue-600 hover:bg-blue-600 hover:text-white transition duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               View Featured Products
             </motion.a>
           </motion.div>
+
           <motion.div
-            className="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mt-10"
             variants={itemVariants}
           >
             <FeatureCard
@@ -119,26 +115,8 @@ const HeroSection = () => {
             />
           </motion.div>
         </motion.div>
-        <motion.div
-          className="absolute top-20 left-10"
-          variants={floatingIconVariants}
-          initial="initial"
-          animate="animate"
-        >
-          <div className="bg-white p-3 rounded-full shadow-lg">
-            <ShoppingBag className="h-6 w-6 text-blue-600" />
-          </div>
-        </motion.div>
-        <motion.div
-          className="absolute bottom-10 right-10"
-          variants={floatingIconVariants}
-          initial="initial"
-          animate="animate"
-        >
-          <div className="bg-white p-3 rounded-full shadow-lg">
-            <Star className="h-6 w-6 text-blue-600" />
-          </div>
-        </motion.div>
+
+       
       </div>
     </section>
   );

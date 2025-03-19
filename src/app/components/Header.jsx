@@ -119,12 +119,12 @@ const Navbar = () => {
             </Link>
 
             {/* User Profile (Hidden in Mobile) */}
-            {userId && (
+           
               <Link href="/profile" className="flex items-center justify-center md:px-2 md:py-1  rounded-full">
                 <User className="h-5 w-5" />
-                <span className="hidden md:flex text-sm font-medium capitalize">{user.fullname}</span>
-              </Link>
-            )}
+               {userId && (  <span className="hidden md:flex text-sm font-medium capitalize">{user.fullname}</span>
+             )}  </Link>
+           
 
             {/* Auth Button */}
             {!userId && (

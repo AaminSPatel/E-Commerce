@@ -14,8 +14,8 @@ import {
 const ShopContext = createContext();
 
 const ShopContextProvider = ({ children }) => {
- const path = process.env.NEXT_PUBLIC_API_URL; 
- //const path = 'http://localhost:3005/'; 
+ // const path = process.env.NEXT_PUBLIC_API_URL; 
+const path = 'http://localhost:3005/'; 
    const [userId, setUserId] = useState("");
   const [items, setItems] = useState([]);
   const [favs, setFavs] = useState([]);
