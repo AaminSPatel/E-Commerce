@@ -135,15 +135,15 @@ const BillTable = ({ items }) => {
 };
 
 const CartPage = () => {
-  const { cart, setCart, handleCartRemove, handleCartUpdate  , user } = useShop();
+  const { cart, setCart, handleCartRemove, handleCartUpdate  , userId } = useShop();
   const [cartItems, setCartItems] = useState([]);
   const router = useRouter();
   const [isLogin, setIsLogin] = useState(false)
 
   useEffect(() => {
     setCartItems(cart);
-    user ? setIsLogin(true) : setIsLogin(false) 
-  },[cart , user]);
+    userId ? setIsLogin(true) : setIsLogin(false) 
+  },[cart , userId]);
 
   const updateQuantity = (id, newQuantity, item) => {
     const newProduct = { ...item, productQuantity: newQuantity };

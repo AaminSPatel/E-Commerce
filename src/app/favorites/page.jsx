@@ -9,13 +9,13 @@ import ProductCard from "../components/productCard"
 
 const FavoritesPage = () => {
   // This would typically come from a state management solution like Redux or Context
-  const {favs , user} = useShop()
+  const {favs , userId} = useShop()
   //console.log(favs);
   const [isLogin, setIsLogin] = useState(false)
   useEffect(()=>{
 
-   user ? setIsLogin(true) : setIsLogin(false) 
-  },[user])
+    userId ? setIsLogin(true) : setIsLogin(false) 
+  },[userId])
  
 
   // Animation variants

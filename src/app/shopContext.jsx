@@ -28,6 +28,7 @@ const ShopContextProvider = ({ children }) => {
   const [orders, setOrders] = useState([]);
   const [contact, setContact] = useState([]);
   const [notification, setNotification] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -194,7 +195,7 @@ const ShopContextProvider = ({ children }) => {
     if (userId) {
       fetchUserData(userId);
     }
-  }, [userId]);
+  }, [userId,user]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");

@@ -119,7 +119,7 @@ const ProfileDashboard = () => {
   ]);
   const [userData,setUserData] = useState({})
   const [allOrder, setAllOrder] = useState([]);
-  const { favs, handleAddFav, order, setOrder,user  } = useShop();
+  const { favs, handleAddFav, order, setOrder,user, userId  } = useShop();
   const router = useRouter();
   useEffect(() => {
     setFavoriteItems(favs);
@@ -128,7 +128,7 @@ const ProfileDashboard = () => {
   
   useEffect(()=>{
     if(user) setUserData(user)
-      console.log('userData',user);
+     // console.log('userData',user);
       
   },[user])
 
@@ -151,7 +151,7 @@ const ProfileDashboard = () => {
   return (
     <div className=" text-gray-900 bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       
-      {userData ? 
+      {userId ? 
       <div className="max-w-6xl mx-auto">
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
         <div className="flex items-center space-x-4 mb-6">
@@ -257,7 +257,7 @@ const Setting = () => {
     city: "",
   });
 
-  const {path, userId,user} = useShop()
+  const {path, userId,user,setUser} = useShop()
   // Fetch existing user data
   useEffect(() => {
    
@@ -379,7 +379,17 @@ const Setting = () => {
         >
           Save Changes
         </motion.button>
+        
       </form>
+      {/* Submit Button */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={()=>{localStorage.setItem("JwtToken",''),setUser({})}}
+          className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          Logout
+        </motion.button>
     </motion.div>
   );
 };
