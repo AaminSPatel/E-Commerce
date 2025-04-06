@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useShop } from '../shopContext';
 import { useRouter } from 'next/navigation';
+import Head from 'next/head';
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
-  const { setMess } = useShop();
+  const { setMess,brandName,brandImage,commonMetaTags, } = useShop();
   
   useEffect(() => {
     setMess({ message: '', type: '' });
@@ -22,6 +23,27 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <Head>
+    <title>{`Login/Signup | ${brandName} - Secure Account Access`}</title>
+    <meta name="description" content={`Secure login/signup for your ${brandName} account. Shop safely in Indore, Ujjain, Bhopal, Dewas, Dhar with our protected payment gateway and AI recommendations.`} />
+    <meta name="keywords" content={`${brandName} login, create account, secure shopping Indore, Ujjain signup, Bhopal ecommerce account, Dewas online store, Dhar shopping login, password recovery, OTP verification, Madhya Pradesh shopping account`} />
+    
+    <link rel="canonical" href="https://e-commerce-nu-nine.vercel.app/auth" />
+    
+    {/* Open Graph / Facebook */}
+    <meta property="og:title" content={`Login/Signup | Secure ${brandName} Access`} />
+    <meta property="og:description" content={`Access your account securely to shop in Indore, Ujjain, Bhopal with AI recommendations and multiple payment options.`} />
+    <meta property="og:url" content="https://e-commerce-nu-nine.vercel.app/auth" />
+    
+    {/* Twitter */}
+    <meta name="twitter:title" content={`Access Your ${brandName} Account Securely`} />
+    <meta name="twitter:description" content={`Login/Signup to enjoy shopping in Central India with cash on delivery & online payments.`} />
+    
+    {/* Common meta tags */}
+    {Object.entries(commonMetaTags).map(([name, content]) => (
+        <meta key={name} name={name} content={content} />
+    ))}
+</Head>
       <div className="w-full max-w-md bg-white rounded-lg shadow-md overflow-hidden">
         <div className="p-6">
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">

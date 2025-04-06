@@ -1,12 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { User, Package, Heart, Settings, LogOut } from "lucide-react";
+import { User, Package, Heart, Settings, LogOut, LogIn } from "lucide-react";
 import { useShop } from "../shopContext";
 import { format } from "date-fns";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Head from "next/head";
 const TabButton = ({ icon: Icon, label, isActive, onClick }) => (
   <motion.button
     whileHover={{ scale: 1.05 }}
@@ -119,7 +120,7 @@ const ProfileDashboard = () => {
   ]);
   const [userData,setUserData] = useState({})
   const [allOrder, setAllOrder] = useState([]);
-  const { favs, handleAddFav, order, setOrder,user, userId  } = useShop();
+  const { favs, handleAddFav, order, setOrder,user, userId,brandName,brandImage,commonMetaTags,  } = useShop();
   const router = useRouter();
   useEffect(() => {
     setFavoriteItems(favs);
@@ -150,7 +151,38 @@ const ProfileDashboard = () => {
 
   return (
     <div className=" text-gray-900 bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      
+       <Head>
+    <title>{`Your Account | ${brandName}`}</title>
+    <meta name="description" content={`Manage your ${brandName} account, orders, addresses and preferences for shopping in Indore, Ujjain, Bhopal, Dewas, Dhar.`} />
+    <meta name="keywords" content={`${brandName} account, order history, manage address, profile settings, Indore shopping account, Ujjain, Bhopal, Dewas, Dhar`} />
+    
+    <link rel="canonical" href="https://e-commerce-nu-nine.vercel.app/profile" />
+    
+    {/* Common meta tags */}
+    {Object.entries(commonMetaTags).map(([name, content]) => (
+        <meta key={name} name={name} content={content} />
+    ))}
+</Head>
+<div className="container mx-auto my-4 w-full px-6 md:px-12">
+  <motion.h1
+    className="text-3xl text-center poppin md:text-4xl font-extrabold mt-4"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.2 }}
+  >
+    Your Personalized Shopping Hub
+  </motion.h1>
+
+  <motion.p
+    className="max-w-5xl  text-center mx-auto py-3 text-lg text-gray-600 mt-2"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.3 }}
+  >
+    Manage your account, track your orders, and explore personalized recommendations tailored just for you. Enjoy a seamless shopping experience with quick access to your saved preferences, payment options, and order history.
+  </motion.p>
+</div>
+
       {userId ? 
       <div className="max-w-6xl mx-auto">
       <div className="bg-white rounded-lg shadow-md p-6 mb-8">
@@ -228,7 +260,42 @@ const ProfileDashboard = () => {
         <Setting/>
       )}
     </div>
-      : <div className="w-full h-[60vh] flex items-center justify-center bg-gradient-to-r  from-gray-800 to-slate-900 rounded-2xl">
+      : <motion.div
+      className="flex flex-col items-center mx-auto justify-center py-16 text-center bg-white shadow-xl rounded-xl p-6 w-full max-w-md"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div
+        className="rounded-full bg-blue-100 p-6 mb-4"
+        initial={{ scale: 0.8 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 100 }}
+      >
+        <LogIn className="h-10 w-10 text-blue-600" />
+      </motion.div>
+      <h3 className="text-xl font-semibold mb-2 text-gray-900">
+        🚀 Your Journey Starts Here!
+      </h3>
+      <p className="text-gray-500 max-w-md mb-6">
+        “Opportunities don’t happen, you create them.”  
+        **Join now and unlock exclusive benefits!**
+      </p>
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Link
+          href="/auth"
+          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
+        >
+          Create Account & Unlock Features 🚀
+        </Link>
+      </motion.div>
+    </motion.div>}
+    </div>
+  );
+};
+/*  
+        
+        <div className="w-full h-[60vh] flex items-center justify-center bg-gradient-to-r  from-gray-800 to-slate-900 rounded-2xl">
          <div className="bg-gradient-to-r  from-blue-500 to-indigo-600 text-white p-10 rounded-xl shadow-2xl text-center w-full mx-auto max-w-lg">
           <h2 className="text-2xl font-bold mb-4">
             🚀 Your Journey Starts Here!
@@ -243,11 +310,7 @@ const ProfileDashboard = () => {
           >
             Create Account & Unlock Features 🚀
           </button>
-        </div></div>}
-    </div>
-  );
-};
-
+        </div></div>*/
 const Setting = () => {
   const [formData, setFormData] = useState({
     fullname: "",
@@ -257,7 +320,8 @@ const Setting = () => {
     city: "",
   });
 
-  const {path, userId,user,setUser} = useShop()
+  const {path, userId,user,setUser,brandName,brandImage,commonMetaTags,setUserId, setFavs
+    ,setCart,token} = useShop()
   // Fetch existing user data
   useEffect(() => {
    
@@ -307,6 +371,7 @@ const Setting = () => {
       exit={{ opacity: 0 }}
       className="bg-white rounded-lg shadow-md p-6 max-w-lg mx-auto"
     >
+     
       <h2 className="text-2xl font-bold mb-4">Edit Profile Details</h2>
       <form className="space-y-4" onSubmit={handleSubmit}>
         {/* Full Name */}
@@ -385,8 +450,20 @@ const Setting = () => {
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          onClick={()=>{localStorage.setItem("JwtToken",''),setUser({})}}
-          className="py-2 px-4 flex items-center gap-3 border mt-3 border-transparent rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          onClick={()=>{localStorage.setItem("JwtToken",''),
+            setUser({})
+            setUserId('')
+            setFavs([])
+            setCart([])
+            setFormData({
+              fullname:  "",
+              mobile: "",
+              town:"",
+              pincode:  "",
+              city:  "",
+            });
+        }}
+          className="py-2 px-4 flex cursor-pointer items-center gap-3 border mt-3 border-transparent rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-700 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         >
          <LogOut/> Logout
         </motion.button>

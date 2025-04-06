@@ -1,21 +1,27 @@
+"use client";
 import React from "react";
 import Link  from "next/link";
+import { useShop } from "../shopContext";
+import Image from "next/image";
 
 
 const Footer = () => {
+  const {brandName,brandImage} = useShop()
     return (
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* About Us */}
             <div>
-              <img
-                src="/path-href-your-logo.png"
-                alt="E-Shop Logo"
-                className="h-12 mb-4"
+              <Image 
+              height={200}
+              width={200}
+                src={brandImage}
+                alt={brandName}
+                className="h-12 w-12 mb-4 rounded-md"
               />
               <p className="text-sm">
-                E-Shop is your one-stop destination for all your shopping needs.
+                {brandName} is your one-stop destination for all your shopping needs.
                 We offer a wide range of products at competitive prices, ensuring
                 quality and customer satisfaction.
               </p>

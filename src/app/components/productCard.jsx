@@ -12,7 +12,7 @@ export default function ProductCard(item) {
     userId,
     favs,
     setFavs,
-    cart,
+    cart,brandName,brandImage,commonMetaTags,
     setCart,
     path,
     handleCartClick,

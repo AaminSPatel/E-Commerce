@@ -4,29 +4,29 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useShop } from "../shopContext.jsx";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ShoppingCart, User, Heart, ChevronDown } from "lucide-react";
+import { Menu, X, ShoppingCart, User, Heart, ChevronDown, Home } from "lucide-react";
+import Image from "next/image.js";
 
 const Navbar = () => {
   const {
     userId,
     user,
-    setBrand,
+    setBrand,brandName,brandImage,commonMetaTags,
     brands,
     categories,
     setSelectedCategory,
     cart,
-    favs,
+    favs
   } = useShop();
   const [isOpen, setIsOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isBrandOpen, setIsBrandOpen] = useState(false);
-
   const [cartLength,setCartLength] = useState(null)
   const [favLength,setFavLength] = useState(null)
   useEffect(()=>{
-    cart.length ?setCartLength(cart.length) : ''
-    favs.length ? setFavLength( favs.length) : ''
-  }, [cart , favs])
+    cart.length > 0 ? setCartLength(cart.length) : setCartLength(0)
+    favs.length > 0 ? setFavLength( favs.length) : setFavLength(0)
+  }, [cart , favs,user,userId])
   return (
     <motion.nav
       className="sticky top-0 z-50 bg-white shadow-lg text-black"
@@ -37,8 +37,14 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-blue-400">
-            Iqra E-comm
+          <Link href="/" className="sm:text-2xl philosopher text-md flex justify-center items-center gap-1 font-bold text-blue-400">
+              <Image 
+                           height={200}
+                           width={200}
+                             src={brandImage}
+                             alt={brandName}
+                             className="h-10 w-10 rounded-full"
+                           /> {brandName}
           </Link>
 
           {/* Desktop Menu */}
@@ -106,19 +112,22 @@ const Navbar = () => {
           </div>
 
           {/* Icons + Menu Toggle */}
-          <div className="flex items-center space-x-4">
-            <Link href="/favorites" className="p-2 relative">
+          <div className="flex items-center space-x-2 text-md">
+            <Link href="/" className="p-1 sm:hidden flex relative">
+              <Home className="h-5 w-5" />
+            </Link>
+<Link href="/favorites" className="p-1 relative">
               <Heart className="h-5 w-5" />
              
-               {favLength ?   <span className="absolute top-0 right-0 h-4 w-4 bg-red-400 text-white rounded-full flex items-center justify-center text-sm">
+               {favLength ?   <span className="absolute top-0 right-0 ml-2 scale-75 h-4 w-4 bg-red-400 text-white rounded-full flex items-center justify-center  text-md">
                   {favLength}
                 </span>:''}
       
             </Link>
 
-            <Link href="/cart" className="p-2 relative">
+            <Link href="/cart" className="p-1 relative">
               <ShoppingCart className="h-5 w-5" />
-              {cartLength >0 ? <span className="absolute left-7 top-1 h-4 w-4 bg-red-400 text-white rounded-full flex items-center justify-center text-sm">
+              {cartLength >0 ? <span className="absolute right-0  ml-2 top-0 h-4 w-4 scale-75 bg-red-400 text-white rounded-full flex items-center justify-center text-md">
                 {cartLength}
                 
                 </span>:''}
@@ -126,7 +135,7 @@ const Navbar = () => {
 
             {/* User Profile (Hidden in Mobile) */}
            
-              <Link href="/profile" className="flex items-center justify-center md:px-2 md:py-1  rounded-full">
+              <Link href="/profile" className="flex items-center justify-center md:px-2 pl-1 md:py-1  rounded-full">
                 <User className="h-5 w-5" />
                {userId && (  <span className="hidden md:flex text-sm font-medium capitalize">{user.fullname}</span>
              )}  </Link>

@@ -6,7 +6,6 @@ import {
   Laptop,
   Smartphone,
   Watch,
-  Headphones,
   Home,
   LayoutGrid,
 } from "lucide-react";
@@ -14,8 +13,8 @@ import {
 const ShopContext = createContext();
 
 const ShopContextProvider = ({ children }) => {
-const path = process.env.NEXT_PUBLIC_API_URL; 
-//  const path = 'http://localhost:3005/'; 
+     const path = process.env.NEXT_PUBLIC_API_URL; 
+     //const path = 'http://localhost:3005/'; 
    const [userId, setUserId] = useState("");
   const [items, setItems] = useState([]);
   const [favs, setFavs] = useState([]);
@@ -29,6 +28,24 @@ const path = process.env.NEXT_PUBLIC_API_URL;
   const [contact, setContact] = useState([]);
   const [notification, setNotification] = useState([]);
 
+  const brandName = "Dealify"; // Replace with your actual brand name
+  const brandImage = "/logo.png" ||"https://e-commerce-nu-nine.vercel.app/logo.jpg"; // Replace with your actual logo path
+  
+const commonMetaTags = {
+  viewport: "width=device-width, initial-scale=1.0",
+  charset: "UTF-8",
+  "theme-color": "#ffffff",
+  "og:site_name": brandName,
+  "og:type": "website",
+  "twitter:card": "summary_large_image",
+  "twitter:creator": "@yourbrandhandle",
+  "fb:app_id": "your-facebook-app-id",
+  "og:image": brandImage,
+  "twitter:image": brandImage,
+  "og:locale": "en_IN",
+  "og:region": "IN",
+  "og:country-name": "India"
+};
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -195,7 +212,7 @@ const path = process.env.NEXT_PUBLIC_API_URL;
     if (userId) {
       fetchUserData(userId);
     }
-  }, [userId,user]);
+  }, [userId,user,token]);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -231,6 +248,7 @@ const path = process.env.NEXT_PUBLIC_API_URL;
       //console.log(message);
       
       if (token && user) {
+        setUser(user);
         setUserId(user._id);
         setToken(token);
         setMess({message:message, type:'success'})
@@ -258,6 +276,7 @@ const path = process.env.NEXT_PUBLIC_API_URL;
       //setMess({message:message, type:'success'})
       if (token && user) {
         setUserId(user._id);
+        setUser(user);
         setToken(token);
         setMess({message:message, type:'success'})
         localStorage.setItem("JwtToken", token);
@@ -413,11 +432,11 @@ const path = process.env.NEXT_PUBLIC_API_URL;
         cart,users,orders,
         categories,
         brands,
-        setCart,contact,
+        setCart,contact,brandName,brandImage,commonMetaTags,
         user,mess, setMess,
         token,
         setUser,
-        handleCartRemove,
+        handleCartRemove,setUserId ,
         order,
         setOrder,
         handleSignUp,

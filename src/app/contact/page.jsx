@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useShop } from "../shopContext";
 import Image from "next/image";
+import Head from "next/head";
+import { brandName } from "../layout";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +14,7 @@ const ContactForm = () => {
     email: "",
     message: "",
   });
-const {path} = useShop()
+const {path,brandName,brandImage,commonMetaTags,} = useShop()
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -114,15 +116,15 @@ const ContactInfo = () => (
     <div className="space-y-4">
       <div className="flex items-center">
         <Mail className="text-blue-600 mr-4" size={24} />
-        <span>support@example.com</span>
+        <span>locomail112@gmail.com</span>
       </div>
       <div className="flex items-center">
         <Phone className="text-blue-600 mr-4" size={24} />
-        <span>+1 (555) 123-4567</span>
+        <span>+91 77470 74810</span>
       </div>
       <div className="flex items-center">
         <MapPin className="text-blue-600 mr-4" size={24} />
-        <span>123 E-commerce St, Digital City, 12345</span>
+        <span>112 {brandName}, Ujjain, MP</span>
       </div>
     </div>
     <div className="mt-8 w-full h-60 object-cover rounded-lg">
@@ -140,8 +142,32 @@ const ContactInfo = () => (
 );
 
 const ContactPage = () => {
+  const {brandName,brandImage,commonMetaTags,} = useShop()
+
   return (
     <div className="min-h-screen  text-gray-900 bg-gray-100 pb-12 px-4 sm:px-6 lg:px-8">
+      <Head>
+    <title>{`Contact Us | ${brandName} Customer Support - Indore, Ujjain, Bhopal`}</title>
+    <meta name="description" content={`Contact ${brandName} customer support for queries related to orders, products or services in Indore, Ujjain, Bhopal, Dewas, Dhar. We're available 24/7.`} />
+    <meta name="keywords" content={`${brandName} contact, customer care Indore, Ujjain support, Bhopal ecommerce help, Dewas shopping queries, Dhar online store contact, return policy, refund process, order tracking, Madhya Pradesh shopping support`} />
+    
+    <link rel="canonical" href="https://e-commerce-nu-nine.vercel.app/contact" />
+    
+    {/* Open Graph / Facebook */}
+    <meta property="og:title" content={`Contact ${brandName} - Central India Customer Support`} />
+    <meta property="og:description" content={`Get help with your orders, products or services in Indore, Ujjain, Bhopal. Our support team is available 24/7.`} />
+    <meta property="og:url" content="https://e-commerce-nu-nine.vercel.app/contact" />
+    
+    {/* Twitter */}
+    <meta name="twitter:title" content={`${brandName} Customer Support - We're Here to Help`} />
+    <meta name="twitter:description" content={`Contact us for any queries about shopping in Indore, Ujjain or Bhopal. COD, returns and order support available.`} />
+    
+    {/* Common meta tags */}
+    {Object.entries(commonMetaTags).map(([name, content]) => (
+        <meta key={name} name={name} content={content} />
+    ))}
+</Head>
+
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

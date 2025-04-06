@@ -34,6 +34,7 @@ import UpdateProductModal from "../components/modelproduct";
 import useNotifications from "../components/notificationfetcher";
 import Image from "next/image";
 import { FaFilter, FaRotate, FaRotateLeft } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -64,7 +65,7 @@ export default function AdminDashboard() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const { items, users, orders, contact, user } = useShop();
+  const { items, users, brandName,brandImage,commonMetaTags,orders, contact, user } = useShop();
 
 
   const [filteredOrders, setFilteredOrders] = useState([])
@@ -294,13 +295,19 @@ else{  let filtered = items.filter((item) =>
   const handleLogout = () => {
     setIsAuthenticated(false);
   };
+  const router = useRouter()
+
   useEffect(() => {
     //  console.log(user);
 
     if (user.email === "aamin@gmail.com") {
       setIsAuthenticated(true);
     }
-  });
+    else{
+      router.push('/auth')
+    }
+  },[user]);
+  
 
   if (!isAuthenticated) {
     return (

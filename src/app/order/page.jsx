@@ -5,6 +5,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { useShop } from "../shopContext";
 import axios from "axios";
 import Image from "next/image";
+import Head from "next/head";
 
 // Mock product data (in a real app, this would come from the cart or previous page)
 const product = {
@@ -35,7 +36,8 @@ export default function OrderPage() {
   const [showOrderSummary, setShowOrderSummary] = useState(false);
 
   const [orderedItems, setOrderedItems] = useState([]);
-  const { cart, path ,userId} = useShop();
+    const { cart, path ,userId,commonMetaTags,brandName,brandImage} = useShop();
+  
   const subtotal = cart.reduce(
     (sum, item) => sum + item.productId.product_price * item.productQuantity,
     0
@@ -282,6 +284,40 @@ export default function OrderPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+      <Head>
+    <title>{`Your Orders | ${brandName} Purchase History`}</title>
+    <meta name="description" content={`View your order history and track current orders from ${brandName}. Manage deliveries in Indore, Ujjain, Bhopal, Dewas, Dhar with our AI-powered tracking system.`} />
+    <meta name="keywords" content={`${brandName} orders, purchase history Indore, Ujjain order tracking, Bhopal delivery status, Dewas shopping history, Dhar online orders, return items, invoice download, order details, Madhya Pradesh shopping records`} />
+    
+    <link rel="canonical" href="https://e-commerce-nu-nine.vercel.app/order" />
+    
+    {/* Open Graph / Facebook */}
+    <meta property="og:title" content={`Your ${brandName} Order History`} />
+    <meta property="og:description" content={`Track and manage all your orders placed in Indore, Ujjain, Bhopal with our AI-powered order management system.`} />
+    <meta property="og:url" content="https://e-commerce-nu-nine.vercel.app/order" />
+    
+    {/* Twitter */}
+    <meta name="twitter:title" content={`Track Your ${brandName} Orders`} />
+    <meta name="twitter:description" content={`View your complete order history and current delivery status for Central India locations.`} />
+    
+    {/* Common meta tags */}
+    {Object.entries(commonMetaTags).map(([name, content]) => (
+        <meta key={name} name={name} content={content} />
+    ))}
+    
+    {/* Order-specific structured data */}
+    <script type="application/ld+json">
+    {`
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Order History",
+            "description": "Track your purchases from ${brandName}",
+            "url": "https://e-commerce-nu-nine.vercel.app/order"
+        }
+    `}
+    </script>
+</Head>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -439,7 +475,7 @@ export default function OrderPage() {
                     {orderedItems.map((item) => (
                       <div
                         key={item._id}
-                        className="flex items-center w-56 shadow-md shadow-blue-300 rounded-md"
+                        className="flex items-center w-56 shadow-md  rounded-md"
                       >
                         <Image
                           src={item.productId.product_image}
@@ -548,7 +584,7 @@ export default function OrderPage() {
                 {orderedItems.map((item) => (
                   <div
                     key={item._id}
-                    className="flex items-center w-56 shadow-md shadow-blue-300 rounded-md"
+                    className="flex items-center w-56 shadow-sm  rounded-md"
                   >
                     <Image
                       src={item.productId.product_image}

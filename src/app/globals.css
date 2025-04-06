@@ -51,7 +51,21 @@
   font-style: normal;
 }
 
+.anim {
+  animation: animatSquare 30s linear infinite;
+}
 
+@keyframes animatSquare {
+  0% { transform: rotate(0deg)   scale(1.1); }
+  10% { transform: rotate(0deg)  scale(1.1) ; } /* Pause at 0° */
+  25% { transform: rotate(90deg) scale(1.0); }
+  35% { transform: rotate(90deg) scale(1.1); } /* Pause at 90° */
+  50% { transform: rotate(180deg) scale(1.0); }
+  60% { transform: rotate(180deg) scale(1.1); } /* Pause at 180° */
+  75% { transform: rotate(270deg) scale(1.0); }
+  85% { transform: rotate(270deg) scale(1.1); } /* Pause at 270° */
+  100% { transform: rotate(360deg) scale(1.0); }
+}
 
 .playwrite {
   font-family: "Playwrite GB S", serif;

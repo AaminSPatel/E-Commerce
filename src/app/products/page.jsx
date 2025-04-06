@@ -6,12 +6,13 @@ import { ChevronDown, Search, ChevronLeft, ChevronRight ,TimerReset } from 'luci
 import { useShop } from "../shopContext";
 import ProductCard from "../components/productCard";
 import { RiResetLeftLine } from "react-icons/ri";
+import Head from "next/head";
 
 export default function Products() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(12);
-  const { brand,brands,selectedCategory, setSelectedCategory,searchTerm, setSearchTerm ,filteredItems,categories,setBrand} = useShop();
+  const { brand,brands,brandName,brandImage,commonMetaTags,selectedCategory, setSelectedCategory,searchTerm, setSearchTerm ,filteredItems,categories,setBrand} = useShop();
 
  useEffect(()=>{
   setSelectedCategory('All');
@@ -44,6 +45,23 @@ export default function Products() {
 
   return (
     <div className="p-4 max-w-7xl mx-auto text-gray-800 bg-white">
+      <Head>
+    <title>{`All Products | ${brandName} - Best Collection in Indore, Ujjain, Bhopal`}</title>
+    <meta name="description" content={`Browse thousands of products at ${brandName} - Central India's largest collection. Best prices in Indore, Ujjain, Dewas, Dhar, Bhopal with COD & online payment options.`} />
+    <meta name="keywords" content={`${brandName} products, online store Indore, shopping Ujjain, ecommerce Bhopal, Dewas marketplace, Dhar shopping, all categories, fashion, electronics, home appliances, groceries, beauty products, Madhya Pradesh shopping`} />
+    
+    <link rel="canonical" href="https://e-commerce-nu-nine.vercel.app/products" />
+    
+    {/* Open Graph / Facebook */}
+    <meta property="og:title" content={`All Products | ${brandName} - Central India's Largest Collection`} />
+    <meta property="og:description" content={`Browse thousands of products with best prices in Indore, Ujjain, Bhopal. COD & online payment options available.`} />
+    <meta property="og:url" content="https://e-commerce-nu-nine.vercel.app/products" />
+    
+    {/* Common meta tags */}
+    {Object.entries(commonMetaTags).map(([name, content]) => (
+        <meta key={name} name={name} content={content} />
+    ))}
+</Head>
       <motion.h1
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
