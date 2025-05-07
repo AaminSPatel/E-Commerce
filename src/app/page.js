@@ -42,10 +42,10 @@ const HeroSection = () => {
         <div className="absolute rounded-2xl bg-white h-72 w-72 p-6 -right-60 top-20 -z-10 rotate-[45deg] anim sm:scale-150 scale-150  md:scale-200">
           <div className="relative w-full h-full">
             
-  <Image height={100} width={200}  src={items[0]?.product_image} className="absolute top-0 left-0 rounded-md h-20 w-20  rotate-[45deg]" alt="Top Left" />
-  <Image height={100} width={200}  src={items[1]?.product_image} className="absolute top-0 right-0 rounded-md h-20 w-20  rotate-[-225deg]" alt="Top Right" />
-  <Image height={100} width={200}  src={items[2]?.product_image} className="absolute bottom-0 left-0 rounded-md h-20 w-20  rotate-[-45deg]" alt="Bottom Left" />
-  <Image height={100} width={200}  src={items[3]?.product_image} className="absolute bottom-0 right-0 rounded-md h-20 w-20  rotate-[225deg]" alt="Bottom Right" />
+  <Image height={100} width={200}  src={items[10]?.product_image} className="absolute top-0 left-0 rounded-md h-20 w-20  rotate-[45deg]" alt="Top Left" />
+  <Image height={100} width={200}  src={items[8]?.product_image} className="absolute top-0 right-0 rounded-md h-20 w-20  rotate-[-225deg]" alt="Top Right" />
+  <Image height={100} width={200}  src={items[16]?.product_image} className="absolute bottom-0 left-0 rounded-md h-20 w-20  rotate-[-45deg]" alt="Bottom Left" />
+  <Image height={100} width={200}  src={items[35]?.product_image} className="absolute bottom-0 right-0 rounded-md h-20 w-20  rotate-[225deg]" alt="Bottom Right" />
 
           </div>
         </div>

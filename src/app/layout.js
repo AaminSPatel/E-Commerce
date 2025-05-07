@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react"
 import { ShopContextProvider } from "./shopContext";
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -16,7 +17,7 @@ const geistMono = Geist_Mono({
 
 // metadataConfig.js
 export const brandName = "Dealify"; // Define your brand name once
-export const brandImage = "./logo.jpg"; // Define your brand image once
+export const brandImage = "/logo.jpg"; // Define your brand image once
 
 export const metadataConfig = {
   home: {
@@ -95,6 +96,7 @@ export default function RootLayout({ children }) {
       > <ShopContextProvider>
         <Header/>
         {children} 
+        <Analytics />
         <Footer/>
       </ShopContextProvider>
       </body>
