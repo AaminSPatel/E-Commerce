@@ -74,7 +74,6 @@ export const metadataConfig = {
     keywords: `${brandName} orders, purchase history Indore, Ujjain order tracking, Bhopal delivery status, Dewas shopping history, Dhar online orders, return items, invoice download, order details, Madhya Pradesh shopping records`,
     path: "/order"
   }
-  // ... rest of your pages follow same pattern
 };
 
 // Usage examples:
